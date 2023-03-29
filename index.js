@@ -8,6 +8,9 @@ const path = require('path');
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || 'localhost';
 
+app.use(express.static(path.join(__dirname,'src', 'public')));
+console.log(path.join(__dirname, 'src','public'))
+
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -37,9 +40,9 @@ app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   console.error(err.message, err.stack);
   res.status(statusCode).json({'message': err.message});
-  
   return;
 });
+
 
 app.listen(port, host, () => {
   console.log(`Example app listening at http://${host}:${port}`)
