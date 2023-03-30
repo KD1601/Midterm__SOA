@@ -17,44 +17,94 @@
 <body>
     <div class="container text-center">
         <div class="row">
-            <div class="col-md-3"><select class="form-select" aria-label="Default select example">
-                    <option selected>Chọn năm</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select></div>
-            <div class="col-sm-3"><select class="form-select" aria-label="Default select example">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select></div>
-            <div class="col-sm-3"><select class="form-select" aria-label="Default select example">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select></div>
+            <h1 class="text-center">Lịch sử tính tiền</h1>
+            <div class="col-md-2">
+                <select id="years" class="form-select" onchange="showMonths()" aria-label="Default select example">
+                    <option disabled selected>Chọn năm</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select id="months" style="display: none;" class="form-select" onchange="showDays()" aria-label="Default select example">
+                    <option disabled selected>Chọn tháng</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select id="days" class="form-select" style="display: none;" aria-label="Default select example"></select>
+            </div>
         </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Mã phiếu</th>
+                    <th scope="col">Mã đơn</th>
+                    <th scope="col">Nhân viên tạo</th>
+                    <th scope="col">Ngày tạo</th>
+                    <th scope="col">Tổng tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">PH0201</th>
+                    <td>DH0101</td>
+                    <td>Nguyễn Văn A</td>
+                    <td>19/01/2023</td>
+                    <td>350.000 VNĐ</td>
+                </tr>
+                <tr>
+                    <th scope="row">PH0201</th>
+                    <td>DH0101</td>
+                    <td>Nguyễn Văn A</td>
+                    <td>19/01/2023</td>
+                    <td>350.000 VNĐ</td>
+                </tr>
+                <tr>
+                    <th scope="row">PH0201</th>
+                    <td>DH0101</td>
+                    <td>Nguyễn Văn A</td>
+                    <td>19/01/2023</td>
+                    <td>350.000 VNĐ</td>
+                </tr>
+                <tr>
+                    <th scope="row">PH0201</th>
+                    <td>DH0101</td>
+                    <td>Nguyễn Văn A</td>
+                    <td>19/01/2023</td>
+                    <td>350.000 VNĐ</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    {{!-- <div style="width: 30%; float: left;">
-        <select class="form-select" aria-label="Default select example">
-            <option selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-        </select>
-    </div>
-    <div style="width: 30%;">
-        <select class="form-select" aria-label="Default select example">
-            <option selected>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-        </select>
-    </div> --}}
-
-
 </body>
+<script>
+    function showMonths(){
+        document.getElementById("months").style.display = "block";
+    }
+    function showDays() {
+        var month = document.getElementById("months").value;
+        var year = new Date().getFullYear();
+        var days = new Date(year, month, 0).getDate();
+        var select = "<option value='' disabled selected>Chọn ngày</option>";
+        for (var i = 1; i <= days; i++) {
+            select += "<option value='" + i + "'>" + i + "</option>";
+        }
+        document.getElementById("days").innerHTML = select;
+        document.getElementById("days").style.display = "block";
+    }
+</script>
 
 </html>
