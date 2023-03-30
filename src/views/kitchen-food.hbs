@@ -22,58 +22,72 @@
         float: right;
         margin-right: 24%;
     }
+    .login {
+        display: none;
+    }
 </style>
 
 <body>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col" class="w-25">Mã món</th>
-                <th scope="col" class="w-25">Tên món</th>
-                <th scope="col" class="w-25">Trạng thái</th>
-                <th scope="col" class="w-25 text-center">Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="w-25">B01</td>
-                <td class="w-25">Bò Mỹ Sốt Tiêu Đen</td>
-                <td class="w-25">Sẵn có</td>
-                <td class="w-25 ">
-                    <div class="form-check form-switch">
-                        <label class="form-check-label" for="flexSwitchCheckChecked">Bật/Tắt món ăn</label>
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
-                            checked>
-                    </div>
-                </td>
-            </tr>
+    <div class="table__handleFood">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" class="w-25">Mã món</th>
+                    <th scope="col" class="w-25">Tên món</th>
+                    <th scope="col" class="w-25">Trạng thái</th>
+                    <th scope="col" class="w-25 text-center">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="w-25">B01</td>
+                    <td class="w-25">Bò Mỹ Sốt Tiêu Đen</td>
+                    <td class="w-25">Sẵn có</td>
+                    <td class="w-25 ">
+                        <div class="form-check form-switch">
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Bật/Tắt món ăn</label>
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                                checked>
+                        </div>
+                    </td>
+                </tr>
 
-            <tr>
-                <td class="w-25">B01</td>
-                <td class="w-25">Bò Mỹ Sốt Tiêu Đen</td>
-                <td class="w-25">Sẵn có</td>
-                <td class="w-25 ">
-                    <div class="form-check form-switch">
-                        <label class="form-check-label" for="flexSwitchCheckChecked1">Bật/Tắt món ăn</label>
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked1"
-                            checked>
-                    </div>
-                </td>
-            </tr>
+                <tr>
+                    <td class="w-25">B01</td>
+                    <td class="w-25">Bò Mỹ Sốt Tiêu Đen</td>
+                    <td class="w-25">Sẵn có</td>
+                    <td class="w-25 ">
+                        <div class="form-check form-switch">
+                            <label class="form-check-label" for="flexSwitchCheckChecked1">Bật/Tắt món ăn</label>
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked1"
+                                checked>
+                        </div>
+                    </td>
+                </tr>
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
+
 </body>
 
 <script>
-    const switchInput = document.querySelector('#flexSwitchCheckChecked');
-    switchInput.addEventListener('change', function (event) {
+    const switchInput = document.getElementById("flexSwitchCheckChecked");
+    const statusCell = document.querySelector("td:nth-child(3)");
+    const nameCell = document.querySelector("td:nth-child(2)");
+    const codeCell = document.querySelector("td:nth-child(1)");
+
+    switchInput.addEventListener("change", function () {
         if (this.checked) {
-            console.log('Switch is ON');
-            // Code thực thi khi switch ở trạng thái ON
+            statusCell.innerHTML = "Sẵn có";
+            statusCell.style.backgroundColor = "";
+            nameCell.style.backgroundColor = "";
+            codeCell.style.backgroundColor = "";
         } else {
-            console.log('Switch is OFF');
-            // Code thực thi khi switch ở trạng thái OFF
+            statusCell.innerHTML = "Đã bán hết";
+            statusCell.style.backgroundColor = "gray";
+            nameCell.style.backgroundColor = "gray";
+            codeCell.style.backgroundColor = "gray";
         }
     });
 </script>

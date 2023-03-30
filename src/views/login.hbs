@@ -18,67 +18,115 @@
       color: white;
       background-color: green;
     }
+
+    .login {
+      display: none;
+    }
+
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgb(196, 207, 124);
+      color: #fff;
+      padding: 10px;
+      position: relative;
+    }
+
+    header .logo img {
+      height: 100px;
+      width: 100px;
+    }
+
+    .container__login {
+      height: 448px;
+    }
+
+    .footer {
+      float: bottom;
+      background-color: rgb(196, 207, 124);
+      ;
+      color: #fff
+    }
   </style>
 </head>
 
-<body class="bg-secondary">
 
-  <h3 class="text-center my-5 text-light">User Login</h3>
 
-  <!-- buộc toàn bộ dòng và cột phải bỏ trong class container -->
-  <div class="container">
+<body>
+  {{!-- buộc toàn bộ dòng và cột phải bỏ trong class container --> --}}
+  <div class="container container__login">
+    <h3 class="text-center my-3">Đăng nhập</h3>
     <div class="row justify-content-center">
       <div class="col-md-10 col-lg-8 col-xl-5">
         <div class="border p-3 rounded bg-light">
-          <form>
+          <form method="POST" action="/login">
             <div class="form-group">
-              <label for="user">Username</label>
+              <label for="user">Tên đăng nhập</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
                     <i class="fas fa-user"></i>
                   </span>
                 </div>
-                <input id="username" type="text" class="form-control" placeholder="Username">
+                <input name="username" id="username" type="text" class="form-control"
+                  placeholder="Tên đăng nhập của bạn">
               </div>
 
             </div>
             <div class="form-group">
-              <label for="pass">Password</label>
+              <label for="pass">Mật khẩu</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">
                     <i class="fas fa-lock"></i>
                   </span>
                 </div>
-                <input type="password" class="form-control" placeholder="Password">
+                <input id="password" name="password" type="password" class="form-control" placeholder="Nhập vào mật khẩu">
               </div>
             </div>
-            <div class="form-group">
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
-                <label class="custom-control-label" for="customCheck">Remember</label>
-              </div>
-            </div>
-            <div class="form-group">
+            <div id="msg__err" class="form-group" hidden>
               <div class="alert alert-danger alert-dismissible fade show">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
-                Invalid username or password!
+                <span id="text__msgErr"></span>
               </div>
             </div>
-            <div class="form-group">
-              <button class="btn btn-success px-5" type="submit">Login</button>
-            </div>
-            <div class="form-group">
-              <p>Don't have any account? <a href="#">Register now!</a></p>
+            <div class="form-group text-center">
+              <button id="btn__login" class="btn btn-success px-5" type="submit">Đăng nhập</button>
             </div>
           </form>
         </div>
       </div>
     </div>
   </div>
-
-
 </body>
+
+<script>
+  const username = document.getElementById("username")
+  const password = document.getElementById("password")
+  const btn__login = document.getElementById("btn__login")
+  const msg__err = document.getElementById("msg__err")
+  const text__msgErr = document.getElementById("text__msgErr")
+  console.log(password)
+  console.log(btn__login)
+
+  btn__login.addEventListener("click", function (e) {
+    if (username.value == null || username.value == "") {
+      e.preventDefault();
+      msg__err.hidden = false
+      text__msgErr.textContent = "Vui lòng nhập tài khoản"
+      setTimeout(function() {
+        msg__err.hidden = true;
+      }, 3000);
+    } else if(password.value == null || password.value == "") {
+      e.preventDefault();
+      msg__err.hidden = false
+      text__msgErr.textContent = "Vui lòng nhập mật khẩu"
+      setTimeout(function() {
+        msg__err.hidden = true;
+      }, 3000);
+    }
+  })
+</script>
 
 </html>

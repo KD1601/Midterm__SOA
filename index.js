@@ -28,11 +28,6 @@ app.engine(
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'src', 'views'));
 
-
-app.get('/', (req, res) => {
-  res.json({'message': 'ok'});
-})
-
 app.use('/', router);
 
 /* Error handler middleware */

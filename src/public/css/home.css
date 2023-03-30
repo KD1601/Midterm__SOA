@@ -176,7 +176,7 @@ body {
 /* Footer */
 
 .footer{
-    
+    float: bottom;
     background-color: rgb(196, 207, 124);;
     color:#fff
 }
