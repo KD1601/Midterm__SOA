@@ -107,14 +107,13 @@
   const btn__login = document.getElementById("btn__login")
   const msg__err = document.getElementById("msg__err")
   const text__msgErr = document.getElementById("text__msgErr")
-  console.log(password)
-  console.log(btn__login)
 
   btn__login.addEventListener("click", function (e) {
     if (username.value == null || username.value == "") {
       e.preventDefault();
       msg__err.hidden = false
       text__msgErr.textContent = "Vui lòng nhập tài khoản"
+      username.focus()
       setTimeout(function() {
         msg__err.hidden = true;
       }, 3000);
@@ -122,6 +121,7 @@
       e.preventDefault();
       msg__err.hidden = false
       text__msgErr.textContent = "Vui lòng nhập mật khẩu"
+      password.focus()
       setTimeout(function() {
         msg__err.hidden = true;
       }, 3000);

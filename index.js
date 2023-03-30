@@ -4,12 +4,12 @@ const app = express();
 const router = require('./src/routes');
 const handlebars = require('express-handlebars');
 const path = require('path');
+const Handlebars = require('handlebars');
 
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || 'localhost';
 
 app.use(express.static(path.join(__dirname,'src', 'public')));
-console.log(path.join(__dirname, 'src','public'))
 
 app.use(bodyParser.json());
 app.use(
@@ -18,12 +18,25 @@ app.use(
   })
 );
 
+
+
 app.engine(
   'hbs',
   handlebars.engine({
       extname: '.hbs',
+      helpers: {
+        eq: function(status, input) {
+          if (status === input) {
+            return new Handlebars.SafeString('<button class="btn">' + this.maban + '</button>');
+          } else {
+            return new Handlebars.SafeString('<button class="btn btn-disable" disabled>' + this.maban + '</button>');
+          }
+        }
+      }
   }),
 );
+
+
 
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'src', 'views'));
