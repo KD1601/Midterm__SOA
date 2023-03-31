@@ -25,6 +25,7 @@
 </style>
 
 <body>
+    
     <a href="/kitchen" id="back">Trở về</a>
     <table class="table">
         <thead >
@@ -35,38 +36,19 @@
             <th scope="col" class="w-25 text-center">Thao tác</th>
           </tr>
         </thead>
-        <tbody >
-          <tr >
-            <td class="w-25">01</td>
-            <td class="w-25">B01</td>
-            <td class="w-25">Đg xử lý</td>
-            <td class="w-25 text-center">
-              <a href="#" class="btn btn-info">Xem chi tiết</a>
-              <a href="#" class="btn btn-success">Đã chế biến xong</a>
-            </td>
-          </tr>
-
-          <tr >
-            <td class="w-25">01</td>
-            <td class="w-25">B01</td>
-            <td class="w-25">Đg xử lý</td>
-            <td class="w-25 text-center">
-              <a href="#" class="btn btn-info">Xem chi tiết</a>
-              <a href="#" class="btn btn-success">Đã chế biến xong</a>
-            </td>
-          </tr>
-
-          <tr >
-            <td class="w-25">01</td>
-            <td class="w-25">B01</td>
-            <td class="w-25">Đg xử lý</td>
-            <td class="w-25 text-center">
-              <a href="#" class="btn btn-info">Xem chi tiết</a>
-              <a href="#" class="btn btn-success">Đã chế biến xong</a>
-            </td>
-          </tr>
-          
-        </tbody>
+        {{#each data}}
+          <tbody >
+            <tr >
+              <td class="w-25">{{maban}}</td>
+              <td class="w-25">{{madonhang}}</td>
+              <td class="w-25">{{trangthai}}</td>
+              <td class="w-25 text-center">
+                <a href="/kitchen/handle-order/{{madonhang}}" class="btn btn-info">Xem chi tiết</a>
+                <a href="#" class="btn btn-success">Đã chế biến xong</a>
+              </td>
+            </tr>
+          </tbody>
+        {{/each}}
       </table>
 </body>
 </html>

@@ -50,31 +50,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td class="w-25">B01</td>
-                    <td class="w-25">Bò Mỹ Sốt Tiêu Đen</td>
-                    <td class="w-25">Sẵn có</td>
-                    <td class="w-25 ">
-                        <div class="form-check form-switch">
-                            <label class="form-check-label" for="flexSwitchCheckChecked">Bật/Tắt món ăn</label>
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
-                                checked>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="w-25">B01</td>
-                    <td class="w-25">Bò Mỹ Sốt Tiêu Đen</td>
-                    <td class="w-25">Sẵn có</td>
-                    <td class="w-25 ">
-                        <div class="form-check form-switch">
-                            <label class="form-check-label" for="flexSwitchCheckChecked1">Bật/Tắt món ăn</label>
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked1"
-                                checked>
-                        </div>
-                    </td>
-                </tr>
+                {{#each data}}   
+                    <tr>
+                        <td class="w-25">{{mamonan}}</td>
+                        <td class="w-25">{{tenmonan}}</td>
+                        <td class="w-25">Sẵn có</td>
+                        <td class="w-25 ">
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" for="flexSwitchCheckChecked">Bật/Tắt món ăn</label>
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked{{mamonan}}"
+                                    checked>
+                            </div>
+                        </td>
+                    </tr>
+                {{/each}}
 
             </tbody>
         </table>
@@ -83,23 +72,29 @@
 </body>
 
 <script>
-    const switchInput = document.getElementById("flexSwitchCheckChecked");
-    const statusCell = document.querySelector("td:nth-child(3)");
-    const nameCell = document.querySelector("td:nth-child(2)");
-    const codeCell = document.querySelector("td:nth-child(1)");
+    // Lấy danh sách các checkbox trong bảng
+    const checkboxes = document.querySelectorAll('.table__handleFood input[type="checkbox"]');
 
-    switchInput.addEventListener("change", function () {
-        if (this.checked) {
-            statusCell.innerHTML = "Sẵn có";
-            statusCell.style.backgroundColor = "";
-            nameCell.style.backgroundColor = "";
-            codeCell.style.backgroundColor = "";
-        } else {
-            statusCell.innerHTML = "Đã bán hết";
-            statusCell.style.backgroundColor = "gray";
-            nameCell.style.backgroundColor = "gray";
-            codeCell.style.backgroundColor = "gray";
-        }
+    // Gán sự kiện change cho từng checkbox
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', () => {
+            // Lấy phần tử td chứa trạng thái của dòng đó
+            const statusTd = checkbox.parentNode.parentNode.previousElementSibling;
+            const nameTd = statusTd.previousElementSibling;
+            const idTd = nameTd.previousElementSibling;
+            // Cập nhật giá trị mới cho trạng thái
+            if (checkbox.checked) {
+                statusTd.textContent = 'Sẵn có';
+                statusTd.style.backgroundColor = 'white';
+                nameTd.style.backgroundColor = 'white';
+                idTd.style.backgroundColor = 'white';
+            } else {
+                statusTd.textContent = 'Đã bán hết';
+                statusTd.style.backgroundColor = 'gray';
+                nameTd.style.backgroundColor = 'gray';
+                idTd.style.backgroundColor = 'gray';
+            }
+        });
     });
 </script>
 

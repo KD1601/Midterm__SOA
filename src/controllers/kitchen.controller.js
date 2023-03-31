@@ -1,4 +1,5 @@
 // Define your controllers here
+const kitchenServices = require('../services/kitchen.service')
 
 async function index(req, res, next) {
     try {
@@ -11,7 +12,30 @@ async function index(req, res, next) {
 
 async function toHandleOrderPage(req, res, next) {
     try {
-        res.render('kitchen-order')
+        const orders = await kitchenServices.getOrders()
+        res.render('kitchen-order', { data: orders })
+    } catch (err) {
+        console.error('An error when direct to kitchen-order page', err.message);
+        next(err);
+    }
+}
+
+async function toHandleDetailOrderPage(req, res, next) {
+    try {
+        const order = await kitchenServices.getOrder(req.params.id)
+        const data = []
+        for (let x in order) {
+            const foodName = await kitchenServices.getFoodName(order[x].mamonan)
+            data.push({
+                tenmonan: foodName,
+                soluong: order[x].soluong,
+                ghichu: order[x].ghichu
+            })
+        }
+        console.log(data)
+            // const food = await kitchenServices.getFoodName('LAU01')
+            // console.log(food)
+        res.render('kitchen-detail-order', { data: data, id: req.params.id })
     } catch (err) {
         console.error('An error when direct to kitchen-order page', err.message);
         next(err);
@@ -20,7 +44,8 @@ async function toHandleOrderPage(req, res, next) {
 
 async function toHandleFoodPage(req, res, next) {
     try {
-        res.render('kitchen-food')
+        const foods = await kitchenServices.getFoods()
+        res.render('kitchen-food', { data: foods })
     } catch (err) {
         console.error('An error when direct to kitchen-food page', err.message);
         next(err);
@@ -28,5 +53,8 @@ async function toHandleFoodPage(req, res, next) {
 }
 
 module.exports = {
-    index,toHandleOrderPage,toHandleFoodPage
+    index,
+    toHandleOrderPage,
+    toHandleDetailOrderPage,
+    toHandleFoodPage
 };

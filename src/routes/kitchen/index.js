@@ -6,6 +6,7 @@ const kitchenController = require('../../controllers/kitchen.controller');
 // E.g:
 router.get('/', kitchenController.index);
 router.get('/handle-order', kitchenController.toHandleOrderPage);
+router.get('/handle-order/:id', kitchenController.toHandleDetailOrderPage);
 router.get('/handle-food', kitchenController.toHandleFoodPage);
 
 module.exports = router;
