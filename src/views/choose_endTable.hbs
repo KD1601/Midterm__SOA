@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js"
+        integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i"
+        crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<style>
+    .container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #ff5e00;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #3e8e41;
+    }
+
+    .login,
+    .footer {
+        display: none;
+    }
+
+    .btn-disable {
+        background-color: #ccc !important;
+    }
+
+    .bill {
+        background-color: rgb(230, 227, 227);
+        width: 100%;
+    }
+
+    .btn-close {
+        width: fit-content;
+        margin: 0 !important;
+    }
+
+    #btn__accept {
+        background-color: #3e8e41;
+    }
+
+    #btn__accept:hover {
+        opacity: 0.8;
+    }
+
+    #btn__exit {
+        background-color: red;
+    }
+
+    #btn__exit:hover {
+        opacity: 0.8;
+    }
+
+    .card {
+        margin: 50px 100px;
+    }
+
+    .card-title {
+        color: #2fd835;
+    }
+
+    .btn-primary {
+        background-color: #2fd835 !important;
+
+    }
+</style>
+
+<body>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">Xác nhận kết thúc đơn hàng</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Bạn chắc chắn muốn kết thúc đơn hàng
+      </div>
+      <div class="modal-footer">
+        <button id="btn__closeTable" data-id={{maban}} type="button" class="btn btn-primary">Xác nhận</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở về</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    {{#if foods}}
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title text-center">Kết thúc đơn hàng</h3>
+        </div>
+        <div class="card-body">
+            <div class="bill">
+                <h3 class="text-center">Các món đã gọi</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Món ăn</th>
+                            <th scope="col">Đơn giá</th>
+                            <th scope="col">Số lượng</th>
+                            <th scope="col">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each foods}}
+                        <tr>
+                            <td>{{this.tenmonan}}</td>
+                            <td>{{formatMoney this.gia}}</td>
+                            <td>{{this.soluong }}</td>
+                            <td>{{formatMoney (multiply this.gia this.soluong)}}</td>
+                        </tr>
+                        {{/each}}
+                        <tr>
+                            <td colspan="3"><b> Tổng tiền</b></td>
+                            <td><b>{{formatMoney (totalPrice foods)}}</b> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer d-flex">
+            <button id="btn__exit" type="button" class="btn btn-secondary mx-5">Thoát</button>
+            <button id="btn__accept" type="button" class="btn btn-primary mx-5" data-bs-toggle="modal" data-bs-target="#exampleModal">Xác nhận</button>
+        </div>
+    </div>
+    {{else}}
+
+    {{/if}}
+
+
+
+
+    <div class="container">
+        <div class="row">
+            {{#each tables}}
+            <div class="col-lg-3 my-3">
+                {{!-- <button class="btn" data-id={{this.maban}} data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    {{
+                    this.maban }}</button> --}}
+                <button class="btn btn__table" data-id={{this.maban}}> {{
+                    this.maban }}</button>
+            </div>
+            {{/each}}
+
+        </div>
+    </div>
+
+    <form id="form__triggerTableId" action="/close-table" method="POST" hidden>
+        <input type="text" name="tableId" id="tableId">
+    </form>
+
+    <form id="form__trigger" action="/close-tableEnd" method="POST" hidden>
+        <input type="text" name="tableId" id="idTable">
+    </form>
+</body>
+
+<script>
+    const buttons = document.querySelectorAll('.btn__table');
+    const form__triggerTableId = document.getElementById('form__triggerTableId')
+    const tableId = document.getElementById('tableId')
+    const btn__accept = document.getElementById('btn__accept')
+    const exampleModal = document.getElementById('exampleModal')
+    const btn__exit = document.getElementById('btn__exit')
+    const btn__closeTable = document.getElementById('btn__closeTable')
+    const idTable = document.getElementById('idTable')
+    const form__trigger = document.getElementById('form__trigger')
+
+
+
+    buttons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+            const buttonId = e.target.getAttribute('data-id');
+            tableId.value = buttonId
+            form__triggerTableId.submit()
+        });
+    });
+
+    btn__exit.addEventListener('click', () => {
+        window.location.href = "/close-table"
+    })
+
+    btn__closeTable.addEventListener('click', (e) => {
+        idTable.value = e.target.getAttribute('data-id');
+        form__trigger.submit()
+    })
+
+</script>
+
+
+</html>

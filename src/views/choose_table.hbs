@@ -71,12 +71,13 @@
     const tableId = document.getElementById('tableId')
 
     buttons.forEach((button) => {
-        button.addEventListener('click', () => {
-            const confirmation = confirm(`Bạn có chắc chắn muốn chọn bàn không?`);
+        button.addEventListener('click', (e) => {
+            const confirmation = confirm(`Bạn có chắc chắn muốn mở bàn này không?`);
             if (confirmation) {
                 button.classList.add('disabled');
-                tableId.value =
-                    form__triggerTableId.submit()
+                tableId.value = e.target.getAttribute('data-id');
+                form__triggerTableId.submit()
+                {{!-- window.location.href = '/home' --}}
             }
         });
     });

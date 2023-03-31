@@ -19,6 +19,21 @@ app.use(
 );
 
 
+Handlebars.registerHelper('multiply', function(a, b) {
+  return a * b;
+});
+
+Handlebars.registerHelper('totalPrice', function(foods) {
+  var total = foods.reduce(function(sum, food) {
+    return sum + (food.gia * food.soluong);
+  }, 0);
+  return total;
+});
+
+Handlebars.registerHelper('formatMoney', function(money) {
+  return money.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+});
+
 
 app.engine(
   'hbs',
@@ -27,7 +42,7 @@ app.engine(
       helpers: {
         eq: function(status, input) {
           if (status === input) {
-            return new Handlebars.SafeString('<button class="btn">' + this.maban + '</button>');
+            return new Handlebars.SafeString('<button data-id= ' +this.maban + ' class="btn">' + this.maban + '</button>');
           } else {
             return new Handlebars.SafeString('<button class="btn btn-disable" disabled>' + this.maban + '</button>');
           }

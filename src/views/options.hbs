@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,6 +18,7 @@
     body {
         height: 100vh;
     }
+
     .content {
         height: 100vh;
     }
@@ -37,7 +39,7 @@
         border-color: #e36913;
     }
 
-    .btn__handleFood:hover{
+    .btn__handleFood:hover {
         border-color: #e36913;
         background-color: #975120 !important;
     }
@@ -51,21 +53,120 @@
     }
 
     #btn__openTable {
-        width: 170px;
+        width: 263px;
+        margin-right: 12px;
     }
 
-    .footer{
+    .footer {
         display: none;
     }
+
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        background-color: rgb(196, 207, 124);
+    }
+
+    label {
+        margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+        padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        width: 200px;
+    }
+
+    button {
+        padding: 10px 20px;
+        margin-top: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #btn__closeTable {
+        background-color: #4CAF50 !important;
+        border-color: #4CAF50;
+    }
+
+    #btn__closeTable:hover {
+        opacity: 0.8;
+    }
 </style>
+
 <body>
+
     <body id="background__kitchen">
-    <div class="container h-100 d-flex justify-content-center align-items-center">
-        <div class="list__function">
-            <a id="btn__openTable" href="/open-table" class="btn btn-lg btn-success btn__handleFood">Mở bàn</a>
-            <a href="/login" class="btn btn-lg btn-success">Đăng nhập</a>
+        <div class="center">
+            <form id="form__checkRole">
+                <label for="employee-code"><b>Mã nhân viên</b></label>
+                <input type="text" id="employee-code" name="employee-code" required>
+                <button type="submit" onclick="checkEmployeeType()">Xác nhận</button>
+            </form>
         </div>
-    </div>
+
+        <div id="kitchen-interface" style="display: none;">
+            <div class="container h-100 d-flex justify-content-center align-items-center">
+                <div class="list__function my-5">
+                    <a id="btn__openTable" href="/open-table" class="btn btn-lg btn-success btn__handleFood">Mở bàn</a>
+                    <a id="btn__closeTable" href="/close-table" class="btn btn-lg btn-success btn__handleFood">Kết thúc
+                        đơn hàng</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="default-interface" style="display: none;">
+            <div class="container h-100 d-flex justify-content-center align-items-center">
+                <a href="/login" class="btn btn-lg btn-success my-5">Đăng nhập</a>
+            </div>
+        </div>
+
+    </body>
 </body>
-</body>
+<script>
+    const form__checkRole = document.getElementById('form__checkRole')
+    form__checkRole.addEventListener('submit', (event) => {
+        event.preventDefault();
+    });
+    function checkEmployeeType() {
+        const employeeCode = document.getElementById('employee-code').value;
+        console.log(employeeCode.length)
+        if (employeeCode.length < 5 || employeeCode.length > 5) {
+            alert('Mã nhân viên phải có 5 kí tự! Vui lòng nhập lại.');
+            return; // Dừng chương trình để người dùng nhập lại
+        } else {
+            const lastCharacter = employeeCode.slice(-1);
+            // Kiểm tra ký tự cuối cùng có phải là "B" hay không
+            if (lastCharacter === 'P' || lastCharacter === 'Q') {
+                // Hiển thị giao diện tương ứng cho nhân viên bếp
+                document.querySelector('.center').style.display = 'none';
+                document.getElementById('kitchen-interface').style.display = 'block';
+                document.getElementById('default-interface').style.display = 'none';
+            } else {
+                // Hiển thị giao diện mặc định cho các nhân viên khác
+                document.querySelector('.center').style.display = 'none';
+                document.getElementById('default-interface').style.display = 'block';
+                document.getElementById('kitchen-interface').style.display = 'none';
+            }
+        }
+
+    }
+</script>
+
 </html>
