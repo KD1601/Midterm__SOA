@@ -30,6 +30,7 @@ async function getCloseTable(maban) {
 };
 
 async function getOpenTable(maban) {
+    console.log(maban)
     const record = await dbClient.query(
         `UPDATE ban SET trangthai = 'mo' WHERE maban = ?`,[maban]
     );

@@ -120,6 +120,7 @@ async function handleCloseTableEnd(req, res, next) {
 async function handleOpenTable(req, res, next) {
     try {
         const maban = req.body.tableId
+        console.log(maban)
         const result = await homeServices.getOpenTable(maban)
         if(result >0) {
             res.redirect('/home')
