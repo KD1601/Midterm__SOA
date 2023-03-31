@@ -9,31 +9,35 @@ const Handlebars = require('handlebars');
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || 'localhost';
 
-app.use(express.static(path.join(__dirname,'src', 'public')));
+app.use(express.static(path.join(__dirname, 'src', 'public')));
 
 app.use(bodyParser.json());
 app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
+    bodyParser.urlencoded({
+        extended: true,
+    })
 );
 
 
 
 app.engine(
-  'hbs',
-  handlebars.engine({
-      extname: '.hbs',
-      helpers: {
-        eq: function(status, input) {
-          if (status === input) {
-            return new Handlebars.SafeString('<button class="btn">' + this.maban + '</button>');
-          } else {
-            return new Handlebars.SafeString('<button class="btn btn-disable" disabled>' + this.maban + '</button>');
-          }
+    'hbs',
+    handlebars.engine({
+        extname: '.hbs',
+        helpers: {
+            eq: function(status, input) {
+                if (status === input) {
+                    return new Handlebars.SafeString('<button class="btn">' + this.maban + '</button>');
+                } else {
+                    return new Handlebars.SafeString('<button class="btn btn-disable" disabled>' + this.maban + '</button>');
+                }
+            },
+            isEmpty: function(trangthai) {
+                if (trangthai == "Đã bán hết") return "";
+                else return "checked"
+            }
         }
-      }
-  }),
+    }),
 );
 
 
@@ -45,13 +49,13 @@ app.use('/', router);
 
 /* Error handler middleware */
 app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  console.error(err.message, err.stack);
-  res.status(statusCode).json({'message': err.message});
-  return;
+    const statusCode = err.statusCode || 500;
+    console.error(err.message, err.stack);
+    res.status(statusCode).json({ 'message': err.message });
+    return;
 });
 
 
 app.listen(port, host, () => {
-  console.log(`Example app listening at http://${host}:${port}`)
+    console.log(`Example app listening at http://${host}:${port}`)
 });

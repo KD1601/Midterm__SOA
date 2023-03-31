@@ -52,9 +52,20 @@ async function toHandleFoodPage(req, res, next) {
     }
 }
 
+async function changeFoodStatus(req, res, next) {
+    try {
+        const change = await kitchenServices.changeStatus(req.body.mamonan, req.body.trangthai)
+        res.render('kitchen-food')
+    } catch (err) {
+        console.error('An error when direct to kitchen-food page', err.message);
+        next(err);
+    }
+}
+
 module.exports = {
     index,
     toHandleOrderPage,
     toHandleDetailOrderPage,
-    toHandleFoodPage
+    toHandleFoodPage,
+    changeFoodStatus
 };

@@ -28,10 +28,18 @@ async function foods() {
     return record
 }
 
+async function change(id, status) {
+    const record = await dbClient.query(
+        `UPDATE monan SET trangthai = ? WHERE monan.mamonan = ? `, [status, id]
+    );
+    return record;
+}
+
 
 module.exports = {
     getAllOrder,
     getDetailOrder,
     foodName,
-    foods
+    foods,
+    change
 }

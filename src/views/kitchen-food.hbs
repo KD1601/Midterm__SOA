@@ -54,12 +54,11 @@
                     <tr>
                         <td class="w-25">{{mamonan}}</td>
                         <td class="w-25">{{tenmonan}}</td>
-                        <td class="w-25">Sẵn có</td>
+                        <td class="w-25">{{trangthai}}</td>
                         <td class="w-25 ">
                             <div class="form-check form-switch">
                                 <label class="form-check-label" for="flexSwitchCheckChecked">Bật/Tắt món ăn</label>
-                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked{{mamonan}}"
-                                    checked>
+                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked{{mamonan}}" {{isEmpty trangthai}}>
                             </div>
                         </td>
                     </tr>
@@ -77,11 +76,23 @@
 
     // Gán sự kiện change cho từng checkbox
     checkboxes.forEach((checkbox) => {
-        checkbox.addEventListener('change', () => {
-            // Lấy phần tử td chứa trạng thái của dòng đó
-            const statusTd = checkbox.parentNode.parentNode.previousElementSibling;
-            const nameTd = statusTd.previousElementSibling;
-            const idTd = nameTd.previousElementSibling;
+        // Lấy phần tử td chứa trạng thái của dòng đó
+        const statusTd = checkbox.parentNode.parentNode.previousElementSibling;
+        const nameTd = statusTd.previousElementSibling;
+        const idTd = nameTd.previousElementSibling;
+        // console.log(idTd.textContent)
+        if (checkbox.checked) {
+            statusTd.textContent = 'Sẵn có';
+            statusTd.style.backgroundColor = 'white';
+            nameTd.style.backgroundColor = 'white';
+            idTd.style.backgroundColor = 'white';
+        } else {
+            statusTd.textContent = 'Đã bán hết';
+            statusTd.style.backgroundColor = 'gray';
+            nameTd.style.backgroundColor = 'gray';
+            idTd.style.backgroundColor = 'gray';
+        }
+        checkbox.addEventListener('change', async () => {
             // Cập nhật giá trị mới cho trạng thái
             if (checkbox.checked) {
                 statusTd.textContent = 'Sẵn có';
@@ -94,6 +105,16 @@
                 nameTd.style.backgroundColor = 'gray';
                 idTd.style.backgroundColor = 'gray';
             }
+            await fetch('/kitchen/handle-food', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    mamonan: idTd.textContent,
+                    trangthai: statusTd.textContent
+                })
+            });
         });
     });
 </script>

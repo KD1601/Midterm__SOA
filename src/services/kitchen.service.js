@@ -38,9 +38,20 @@ async function getFoods() {
     }
 }
 
+async function changeStatus(id, status) {
+    try {
+        var change = await repo.change(id, status);
+        return change
+    } catch (err) {
+        console.log(err);
+        throw new Error('Service: Something wrong');
+    }
+}
+
 module.exports = {
     getOrders,
     getOrder,
     getFoodName,
-    getFoods
+    getFoods,
+    changeStatus
 }
