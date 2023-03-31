@@ -25,6 +25,7 @@
 </style>
 
 <body>
+    
     <a href="/kitchen" id="back">Trở về</a>
     <table class="table">
         <thead >
@@ -35,39 +36,52 @@
             <th scope="col" class="w-25 text-center">Thao tác</th>
           </tr>
         </thead>
-        <tbody >
-          <tr >
-            <td class="w-25">01</td>
-            <td class="w-25">B01</td>
-            <td class="w-25">Đg xử lý</td>
-            <td class="w-25 text-center">
-              <a href="#" class="btn btn-info">Xem chi tiết</a>
-              <a href="#" class="btn btn-success">Đã chế biến xong</a>
-            </td>
-          </tr>
-
-          <tr >
-            <td class="w-25">01</td>
-            <td class="w-25">B01</td>
-            <td class="w-25">Đg xử lý</td>
-            <td class="w-25 text-center">
-              <a href="#" class="btn btn-info">Xem chi tiết</a>
-              <a href="#" class="btn btn-success">Đã chế biến xong</a>
-            </td>
-          </tr>
-
-          <tr >
-            <td class="w-25">01</td>
-            <td class="w-25">B01</td>
-            <td class="w-25">Đg xử lý</td>
-            <td class="w-25 text-center">
-              <a href="#" class="btn btn-info">Xem chi tiết</a>
-              <a href="#" class="btn btn-success">Đã chế biến xong</a>
-            </td>
-          </tr>
-          
-        </tbody>
+        {{#each data}}
+          <tbody >
+            <tr >
+              <td class="w-25">{{maban}}</td>
+              <td class="w-25">{{madonhang}}</td>
+              <td class="w-25">{{trangthai}}</td>
+              <td class="w-25 text-center">
+                <a href="/kitchen/handle-order/{{madonhang}}" class="btn btn-info">Xem chi tiết</a>
+                <a href="#" onclick="completeOrder('{{madonhang}}')" class="btn btn-success">Đã chế biến xong</a>
+              </td>
+            </tr>
+          </tbody>
+        {{/each}}
       </table>
 </body>
+  <script>
+
+    // Lấy tất cả các nút "Đã chế biến xong" trên trang
+    const buttons = document.querySelectorAll('.btn-success');
+
+    // Lặp qua từng nút và kiểm tra trạng thái của hàng tương ứng
+    buttons.forEach(button => {
+      const row = button.parentNode.parentNode; // Lấy hàng chứa nút
+
+      // Kiểm tra trạng thái của hàng
+      const status = row.querySelector('.w-25:nth-child(3)').textContent.trim();
+      if (status === 'Đã xử lý') {
+        // Nếu trạng thái là "Đã xử lý", tắt nút "Đã chế biến xong"
+        button.hidden = true;
+      }
+    });
+
+    async function completeOrder(madonhang) {
+      await fetch('/kitchen/handle-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          madonhang: madonhang,
+        })
+      })
+        .then(response => {
+          window.location.reload();
+        })
+    } 
+  </script>
 </html>
 
