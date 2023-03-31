@@ -28,9 +28,16 @@ async function foods() {
     return record
 }
 
-async function change(id, status) {
+async function changeFoodS(id, status) {
     const record = await dbClient.query(
         `UPDATE monan SET trangthai = ? WHERE monan.mamonan = ? `, [status, id]
+    );
+    return record;
+}
+
+async function completeO(id, status) {
+    const record = await dbClient.query(
+        `UPDATE donhang SET trangthai = ? WHERE donhang.madonhang = ? `, [status, id]
     );
     return record;
 }
@@ -41,5 +48,6 @@ module.exports = {
     getDetailOrder,
     foodName,
     foods,
-    change
+    changeFoodS,
+    completeO
 }

@@ -62,10 +62,22 @@ async function changeFoodStatus(req, res, next) {
     }
 }
 
+async function completeOrder(req, res, next) {
+    try {
+        console.log(req.body)
+        const change = await kitchenServices.completeOrder(req.body.madonhang, "Đã xử lý")
+        res.render('kitchen-food')
+    } catch (err) {
+        console.error('An error when direct to kitchen-food page', err.message);
+        next(err);
+    }
+}
+
 module.exports = {
     index,
     toHandleOrderPage,
     toHandleDetailOrderPage,
     toHandleFoodPage,
-    changeFoodStatus
+    changeFoodStatus,
+    completeOrder
 };

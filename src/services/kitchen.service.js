@@ -40,7 +40,17 @@ async function getFoods() {
 
 async function changeStatus(id, status) {
     try {
-        var change = await repo.change(id, status);
+        var change = await repo.changeFoodS(id, status);
+        return change
+    } catch (err) {
+        console.log(err);
+        throw new Error('Service: Something wrong');
+    }
+}
+
+async function completeOrder(id, status) {
+    try {
+        var change = await repo.completeO(id, status);
         return change
     } catch (err) {
         console.log(err);
@@ -53,5 +63,6 @@ module.exports = {
     getOrder,
     getFoodName,
     getFoods,
-    changeStatus
+    changeStatus,
+    completeOrder
 }
