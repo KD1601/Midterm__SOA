@@ -83,6 +83,21 @@ async function getFood(mamonan) {
 async function createBill(code, madonhang, manv, date) {
     try {
         var results = await repo.createBill(code, madonhang, manv, date)
+        async function getFoodList() {
+            try {
+                var results = await repo.foodList()
+                return results
+            } catch (err) {
+                console.log(err);
+                throw new Error('Service: Something wrong');
+            }
+        }
+    } catch (err) {
+        console.log(err);
+        throw new Error('Service: Something wrong');
+    }
+}
+
 async function getFoodList() {
     try {
         var results = await repo.foodList()
@@ -94,5 +109,5 @@ async function getFoodList() {
 }
 
 module.exports = {
-    getTables,getEndTables,getCloseTable,getBill,getBillDetail,getFood, getOpenTable, createBill,getFoodList,
+    getTables, getEndTables, getCloseTable, getBill, getBillDetail, getFood, getOpenTable, createBill, getFoodList,
 }
