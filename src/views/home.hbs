@@ -12,7 +12,56 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
         crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <title>Trang Chủ</title>
+    <style>
+        .menu-order {
+            position: fixed;
+            bottom: 75px;
+            right: 24px;
+            z-index: 9999;
+            background-color: #3db4cc;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+        }
+
+        .order-his-btn {
+            position: fixed;
+            top: 20px;
+            right: 24px;
+            z-index: 9999;
+            background-color: #005829;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            margin-left: 55%;
+        }
+
+        .order-his-btn:hover {
+            background-color: #e11919;
+        }
+
+        .menu-order-complete {
+            position: fixed;
+            top: 75px;
+            right: 24px;
+            z-index: 9999;
+            background-color: #3db4cc;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+        }
+    </style>
 </head>
 
 <body>
@@ -50,10 +99,12 @@
                                 <i class="fs-4"></i> <span class="ms-1 d-none d-sm-inline">Thịt</span></a>
                             <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
                                 <li class="w-100">
-                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Thịt bò</span></a>
+                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Thịt
+                                            bò</span></a>
                                 </li>
                                 <li>
-                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Thịt heo</span></a>
+                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Thịt
+                                            heo</span></a>
                                 </li>
                             </ul>
                         </li>
@@ -73,11 +124,10 @@
                 <div class="product-row row">
                     {{#each data}}
                     <div class="product-card col-md-5">
-                        <img class="product-image" src="{{hinhanh}}"
-                            alt="Product 1">
+                        <img class="product-image" src="{{hinhanh}}" alt="Product 1">
                         <div class="product-info">
-                            <h3 class="product-name">{{tenmonan}}</h3>
-                            <h4 class="product-price">{{gia}}</h4>
+                            <h3 class="product-name" value="{{tenmonan}}">{{tenmonan}}</h3>
+                            <h4 class="product-price" value="{{gia}}">{{gia}}</h4>
                             <div class="quantity-control justify-content-around counter">
                                 <button class="quantity-btn decrement">-</button>
                                 <span class="quantity-value count">0</span>
@@ -89,8 +139,66 @@
                 </div>
             </div>
         </div>
+
         <div>
-            <!-- <a href="#" class="orderfood">Đặt món</a> -->
+            <button class="order-his-btn">Món đã đặt</button>
+            <div class="menu-order-complete">
+                <table class="table" id="menu-order-complete-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tên món</th>
+                            <th scope="col">Đơn giá</th>
+                            <th scope="col">Số lượng</th>
+                            <th scope="col">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Gà</td>
+                            <td>50000</td>
+                            <td>2</td>
+                            <td>100000</td>
+                        </tr>
+                        <tr>
+                            <td>Bò</td>
+                            <td>20000</td>
+                            <td>2</td>
+                            <td>40000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="menu-order">
+                <table class="table" id="menu-order-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tên món</th>
+                            <th scope="col">Đơn giá</th>
+                            <th scope="col">Số lượng</th>
+                            <th scope="col">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{!-- <tr>
+                            <td>Gà</td>
+                            <td>50000</td>
+                            <td>2</td>
+                            <td>100000</td>
+                        </tr>
+                        <tr>
+                            <td>Bò</td>
+                            <td>20000</td>
+                            <td>2</td>
+                            <td>40000</td>
+                        </tr> --}}
+                    </tbody>
+                    <tfoot style="border: none;">
+                        <td colspan="2"></td>
+                        <th>Tổng tiền</td>
+                        <td>0</td>
+                    </tfoot>
+                </table>
+            </div>
             <button class="order-btn">Đặt món</button>
         </div>
     </div>
@@ -109,6 +217,12 @@
     });
 
     var counters = document.querySelectorAll(".counter");
+    // Lấy table element từ ID của table
+    var table = document.getElementById("menu-order-table");
+    // Lấy tbody element của table
+    var tbody = table.getElementsByTagName("tbody")[0];
+    var tfoot = table.getElementsByTagName("tfoot")[0];
+    console.log(tfoot)
 
     function increment(event) {
         var counter = event.target.closest(".counter");
@@ -122,6 +236,53 @@
             counter.querySelector(".decrement").style.display = "inline-block";
             counter.querySelector(".count").style.display = "inline-block";
         }
+        //console.log(this.parentNode.parentNode.children[1].getAttribute('value'));
+        var number = count;
+        var name = this.parentNode.parentNode.children[0].textContent;
+        var price = this.parentNode.parentNode.children[1].getAttribute('value')
+
+
+        var nameCell = name;
+        var quantityCell = number
+
+        // Kiểm tra nếu tên món đã có trong bảng thì tăng số lượng lên 1 và tính lại cột thành tiền
+        var existingRow = Array.from(tbody.rows).find(function (row) {
+            console.log(row.cells[0].innerHTML)
+            return row.cells[0].innerHTML == nameCell;
+        });
+
+        if (existingRow) {
+            var existingQuantity = parseInt(existingRow.cells[2].innerHTML);
+            existingRow.cells[2].innerHTML = parseInt(quantityCell);
+            existingRow.cells[3].innerHTML = parseInt(existingRow.cells[1].innerHTML) * parseInt(existingRow.cells[2].innerHTML);
+        } else {
+            // Tạo một row mới
+            var newRow = tbody.insertRow();
+            // Tạo một cell mới cho cột "Tên món"
+            var nameCell = newRow.insertCell(0);
+            nameCell.innerHTML = name;
+            // Tạo một cell mới cho cột "Đơn giá"
+            var priceCell = newRow.insertCell(1);
+            priceCell.innerHTML = price;
+            // Tạo một cell mới cho cột "Số lượng"
+            var quantityCell = newRow.insertCell(2);
+            quantityCell.innerHTML = number;
+            var totalPriceCell = newRow.insertCell(3);
+            totalPriceCell.innerHTML = parseInt(priceCell.innerHTML) * parseInt(quantityCell.innerHTML);
+        }
+        $(document).ready(function () {
+            // Lấy tất cả các thẻ td cuối cùng trong tbody
+            var tdList = $('#menu-order-table tbody tr td:last-child');
+
+            // Tính tổng giá trị của các thẻ td cuối cùng
+            var totalPrice = 0;
+            tdList.each(function () {
+                totalPrice += parseInt($(this).text());
+            });
+
+            // Đặt giá trị của tổng vào thẻ td cuối cùng của tfoot
+            $('#menu-order-table tfoot td:last-child').text(totalPrice);
+        });
     }
 
     function decrement(event) {
@@ -136,8 +297,54 @@
             counter.querySelector(".decrement").style.display = "inline-block";
             counter.querySelector(".count").style.display = "inline-block";
         }
-    }
+        var number = count;
+        var name = this.parentNode.parentNode.children[0].textContent;
+        var price = this.parentNode.parentNode.children[1].getAttribute('value')
 
+        var nameCell = name;
+        var quantityCell = number
+
+        // Kiểm tra nếu tên món đã có trong bảng thì tăng số lượng lên 1 và tính lại cột thành tiền
+        var existingRow = Array.from(tbody.rows).find(function (row) {
+            return row.cells[0].innerHTML == nameCell;
+        });
+
+        if (existingRow) {
+            var existingQuantity = parseInt(existingRow.cells[2].innerHTML);
+            existingRow.cells[2].innerHTML = parseInt(quantityCell);
+            existingRow.cells[3].innerHTML = parseInt(existingRow.cells[1].innerHTML) * parseInt(existingRow.cells[2].innerHTML);
+            if (quantityCell == 0) {
+                existingRow.remove();
+            }
+        } else {
+            // Tạo một row mới
+            var newRow = tbody.insertRow();
+            // Tạo một cell mới cho cột "Tên món"
+            var nameCell = newRow.insertCell(0);
+            nameCell.innerHTML = name;
+            // Tạo một cell mới cho cột "Đơn giá"
+            var priceCell = newRow.insertCell(1);
+            priceCell.innerHTML = price;
+            // Tạo một cell mới cho cột "Số lượng"
+            var quantityCell = newRow.insertCell(2);
+            quantityCell.innerHTML = number;
+            var totalPriceCell = newRow.insertCell(3);
+            totalPriceCell.innerHTML = parseInt(priceCell.innerHTML) * parseInt(quantityCell.innerHTML);
+        }
+        $(document).ready(function () {
+            // Lấy tất cả các thẻ td cuối cùng trong tbody
+            var tdList = $('#menu-order-table tbody tr td:last-child');
+
+            // Tính tổng giá trị của các thẻ td cuối cùng
+            var totalPrice = 0;
+            tdList.each(function () {
+                totalPrice += parseInt($(this).text());
+            });
+
+            // Đặt giá trị của tổng vào thẻ td cuối cùng của tfoot
+            $('#menu-order-table tfoot td:last-child').text(totalPrice);
+        });
+    }
     for (var i = 0; i < counters.length; i++) {
         var decrementButton = counters[i].querySelector(".decrement");
         var incrementButton = counters[i].querySelector(".increment");
@@ -146,8 +353,6 @@
         decrementButton.style.display = "none";
         counters[i].querySelector(".count").style.display = "none";
     }
-
-
 </script>
 
 </html>
