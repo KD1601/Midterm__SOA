@@ -5,7 +5,7 @@ const repo = require('../repositories/home.repository')
 async function getTables() {
     try {
         var listTable = await repo.getTables()
-        if(listTable.length > 0) {
+        if (listTable.length > 0) {
             return listTable
         } else {
             return false
@@ -19,7 +19,7 @@ async function getTables() {
 async function getEndTables() {
     try {
         var listTable = await repo.getEndTables()
-        if(listTable.length > 0) {
+        if (listTable.length > 0) {
             return listTable
         } else {
             return false
@@ -83,6 +83,9 @@ async function getFood(mamonan) {
 async function createBill(code, madonhang, manv, date) {
     try {
         var results = await repo.createBill(code, madonhang, manv, date)
+async function getFoodList() {
+    try {
+        var results = await repo.foodList()
         return results
     } catch (err) {
         console.log(err);
@@ -91,5 +94,5 @@ async function createBill(code, madonhang, manv, date) {
 }
 
 module.exports = {
-    getTables,getEndTables,getCloseTable,getBill,getBillDetail,getFood, getOpenTable, createBill
+    getTables,getEndTables,getCloseTable,getBill,getBillDetail,getFood, getOpenTable, createBill,getFoodList,
 }

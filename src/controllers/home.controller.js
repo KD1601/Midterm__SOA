@@ -13,7 +13,8 @@ async function index(req, res, next) {
 
 async function home(req, res, next) {
     try {
-        res.render('home');
+        const foods = await homeServices.getFoodList();
+        res.render('home', { data: foods });
     } catch (err) {
         console.error('Error', err.message);
         next(err);
@@ -43,14 +44,14 @@ async function getListEndTable(req, res, next) {
 async function handleCloseTable(req, res, next) {
     try {
         const maban = req.body.tableId
-        // const result = await homeServices.getCloseTable(maban)
+            // const result = await homeServices.getCloseTable(maban)
         const bill = await homeServices.getBill(maban)
         var arrFood = [];
         if (bill[0].madonhang) {
             var billdetails = await homeServices.getBillDetail(bill[0].madonhang)
             const cacMaMonAn = billdetails.map(item => item.mamonan);
             async function getFoods(callback) {
-                const promises = cacMaMonAn.map(async (element) => {
+                const promises = cacMaMonAn.map(async(element) => {
                     let food = await homeServices.getFood(element);
                     return food;
                 });
@@ -130,6 +131,11 @@ async function handleOpenTable(req, res, next) {
 }
 
 module.exports = {
-    index, getListTable, getListEndTable, handleCloseTable, handleCloseTableEnd, handleOpenTable,
+    index,
+    getListTable,
+    getListEndTable,
+    handleCloseTable,
+    handleCloseTableEnd,
+    handleOpenTable,
     home,
 };
