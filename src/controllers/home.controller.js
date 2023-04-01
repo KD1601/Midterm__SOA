@@ -13,7 +13,10 @@ async function index(req, res, next) {
 
 async function home(req, res, next) {
     try {
-        const foods = await homeServices.getFoodList();
+        let foods = await homeServices.getFoodList();
+        if (req.params.filter) {
+            foods = await homeServices.getFoodListFilter(req.params.filter);
+        }
         res.render('home', { data: foods });
     } catch (err) {
         console.error('Error', err.message);

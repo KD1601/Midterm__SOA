@@ -1,11 +1,5 @@
 const dbClient = require('./db_client');
 
-async function handleLogin(username, password) {
-    const record = await dbClient.query(
-        `SELECT * FROM accounts WHERE tendangnhap = ? && matkhau = ?`, [username, password]
-    );
-    return record[0].tendangnhap;
-};
 
 async function getTables() {
     const record = await dbClient.query(
@@ -78,6 +72,13 @@ async function foodList() {
     return record;
 }
 
+async function foodListFilter(filter) {
+    const record = await dbClient.query(
+        `SELECT * FROM monan WHERE mamonan LIKE '%${filter}%'`
+    );
+    return record;
+}
+
 async function foodId(tenmonan) {
     const record = await dbClient.query(
         `SELECT mamonan FROM monan where tenmonan = ?`, [tenmonan]
@@ -110,6 +111,7 @@ module.exports = {
     getOpenTable,
     createBill,
     foodList,
+    foodListFilter,
     getBillM,
     foodId,
     createO,

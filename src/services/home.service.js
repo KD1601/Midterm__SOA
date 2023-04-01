@@ -118,6 +118,16 @@ async function getFoodList() {
     }
 }
 
+async function getFoodListFilter(filter) {
+    try {
+        var results = await repo.foodListFilter(filter)
+        return results
+    } catch (err) {
+        console.log(err);
+        throw new Error('Service: Something wrong');
+    }
+}
+
 async function getMaMonAn(tenmonan) {
     try {
         var results = await repo.foodId(tenmonan)
@@ -159,6 +169,7 @@ module.exports = {
     getOpenTable,
     createBill,
     getFoodList,
+    getFoodListFilter,
     getBillM,
     getMaMonAn,
     createOrder,

@@ -4,6 +4,7 @@ const homeController = require('../../controllers/home.controller');
 
 router.get('/', homeController.index);
 router.get('/home', homeController.home);
+router.get('/home/:filter', homeController.home);
 router.post('/home', homeController.completeOrder);
 router.get('/open-table/:id', homeController.getListTable);
 router.post('/open-table/:id', homeController.handleOpenTable);
