@@ -92,24 +92,29 @@
 
 <body>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">Xác nhận kết thúc đơn hàng</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Bạn chắc chắn muốn kết thúc đơn hàng
-      </div>
-      <div class="modal-footer">
-        <button id="btn__closeTable" data-id={{maban}} type="button" class="btn btn-primary">Xác nhận</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở về</button>
-      </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">Xác nhận kết thúc đơn hàng</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input__Code">
+                        <label for="employee-code"><b>Mã nhân viên</b></label>
+                        <input type="text" id="employee_code" name="employee_code" required>
+                    </div>
+                    Bạn chắc chắn muốn kết thúc đơn hàng
+                </div>
+                <div class="modal-footer">
+                    <button id="btn__closeTable" data-id={{maban}} type="button" class="btn btn-primary">Xác
+                        nhận</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở về</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
     {{#if foods}}
     <div class="card">
@@ -147,7 +152,8 @@
         </div>
         <div class="card-footer d-flex">
             <button id="btn__exit" type="button" class="btn btn-secondary mx-5">Thoát</button>
-            <button id="btn__accept" type="button" class="btn btn-primary mx-5" data-bs-toggle="modal" data-bs-target="#exampleModal">Xác nhận</button>
+            <button id="btn__accept" type="button" class="btn btn-primary mx-5" data-bs-toggle="modal"
+                data-bs-target="#exampleModal">Xác nhận</button>
         </div>
     </div>
     {{else}}
@@ -161,9 +167,6 @@
         <div class="row">
             {{#each tables}}
             <div class="col-lg-3 my-3">
-                {{!-- <button class="btn" data-id={{this.maban}} data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    {{
-                    this.maban }}</button> --}}
                 <button class="btn btn__table" data-id={{this.maban}}> {{
                     this.maban }}</button>
             </div>
@@ -178,6 +181,7 @@
 
     <form id="form__trigger" action="/close-tableEnd" method="POST" hidden>
         <input type="text" name="tableId" id="idTable">
+        <input type="text" name="employeeId" id="employeeId">
     </form>
 </body>
 
@@ -191,7 +195,8 @@
     const btn__closeTable = document.getElementById('btn__closeTable')
     const idTable = document.getElementById('idTable')
     const form__trigger = document.getElementById('form__trigger')
-
+    const employee_code = document.getElementById('employee_code')
+    const employeeId = document.getElementById('employeeId')
 
 
     buttons.forEach((button) => {
@@ -207,8 +212,13 @@
     })
 
     btn__closeTable.addEventListener('click', (e) => {
-        idTable.value = e.target.getAttribute('data-id');
-        form__trigger.submit()
+        if (employee_code.value == null || employee_code.value.length != 5) {
+            alert("Vui lòng nhập đúng mã nhân viên")
+        } else {
+            idTable.value = e.target.getAttribute('data-id');
+            employeeId.value = employee_code.value
+            form__trigger.submit()
+        }
     })
 
 </script>

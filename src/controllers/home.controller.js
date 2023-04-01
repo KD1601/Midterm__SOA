@@ -40,35 +40,6 @@ async function getListEndTable(req, res, next) {
     }
 }
 
-// async function login(req, res, next) {
-//     try {
-//         res.render('login');
-//     } catch (err) {
-//         console.error('Error', err.message);
-//         next(err);
-//     }
-// }
-
-
-// async function handleLogin(req, res, next) {
-//     try {
-//         const { username, password } = req.body
-//         const select = await homeServices.handleLogin(username, password)
-//         if (select) {
-//             if (select.startsWith("B")) {
-//                 res.render('kitchen_main')
-//             } else {
-//                 res.render('login')
-//             }
-//         } else {
-//             res.render('login')
-//         }
-//     } catch (err) {
-//         console.error('An error when login', err.message);
-//         next(err);
-//     }
-// }
-
 async function handleCloseTable(req, res, next) {
     try {
         const maban = req.body.tableId
@@ -105,12 +76,39 @@ async function handleCloseTable(req, res, next) {
     }
 }
 
+var generatedCodes = [];
+
+function generateRandomCode() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const codeLength = 10;
+    let code = '';
+
+    do {
+        for (let i = 0; i < codeLength; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            code += characters.charAt(randomIndex);
+        }
+    } while (generatedCodes.includes(code));
+
+    generatedCodes.push(code);
+    return code;
+}
+
 async function handleCloseTableEnd(req, res, next) {
     try {
         const maban = req.body.tableId
+        const manv = req.body.employeeId
         const result = await homeServices.getCloseTable(maban)
+        const billCode = await homeServices.getBill(maban)
+        let randomCode = generateRandomCode();
+        const moment = require('moment-timezone');
+        const currentTime = moment().tz('Asia/Ho_Chi_Minh');
+        const formattedTime = currentTime.format('YYYY-MM-DD HH:mm:ss');
+        const bill = await homeServices.createBill(randomCode, billCode[0].madonhang, manv, formattedTime)
+        req.session.flash = {
+            message: `Phiếu tính tiền ${randomCode} đã được tạo thành công vào lúc ${formattedTime}`,
+        }
         res.redirect('/close-table')
-        
     } catch (err) {
         console.error('Error', err.message);
         next(err);
@@ -120,12 +118,11 @@ async function handleCloseTableEnd(req, res, next) {
 async function handleOpenTable(req, res, next) {
     try {
         const maban = req.body.tableId
-        console.log(maban)
         const result = await homeServices.getOpenTable(maban)
-        if(result >0) {
+        if (result > 0) {
             res.redirect('/home')
         }
-        
+
     } catch (err) {
         console.error('Error', err.message);
         next(err);
@@ -133,6 +130,6 @@ async function handleOpenTable(req, res, next) {
 }
 
 module.exports = {
-    index, getListTable, getListEndTable, handleCloseTable,handleCloseTableEnd,handleOpenTable,
+    index, getListTable, getListEndTable, handleCloseTable, handleCloseTableEnd, handleOpenTable,
     home,
 };

@@ -5,6 +5,8 @@ const router = require('./src/routes');
 const handlebars = require('express-handlebars');
 const path = require('path');
 const Handlebars = require('handlebars');
+const sessions = require('express-session');
+const flashMessage = require('./src/middlewares/flash_message');
 
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || 'localhost';
@@ -17,6 +19,14 @@ app.use(
     extended: true,
   })
 );
+app.use(sessions({
+  secret: "my_secret_key",
+  saveUninitialized: true,
+  cookie: { maxAge: 1000 * 60 * 60 * 24 },
+  resave: false
+}));
+
+app.use(flashMessage);
 
 
 Handlebars.registerHelper('multiply', function (a, b) {

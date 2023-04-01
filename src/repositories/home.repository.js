@@ -56,6 +56,15 @@ async function getFood(mamonan) {
     return record;
 };
 
+async function createBill(code, madonhang, manv, date) {
+    const record = await dbClient.query(
+        `INSERT INTO phieutinhtien (maphieu, madonhang, manhanvien, ngaytao) VALUES (?, ?, ?, ?)`,
+  [code, madonhang, manv, date]
+    );
+    console.log(record)
+    // return record;
+};
+
 
 
 module.exports = {
@@ -65,5 +74,6 @@ module.exports = {
     getBill,
     getBillDetail,
     getFood,
-    getOpenTable
+    getOpenTable,
+    createBill,
 }
