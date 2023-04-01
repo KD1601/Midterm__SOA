@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <form id="form__triggerTableId" action="/open-table" method="POST" hidden>
+    <form id="form__triggerTableId" action="/open-table/{{id}}" method="POST" hidden>
         <input type="text" name="tableId" id="tableId">
     </form>
 </body>
@@ -77,7 +77,6 @@
                 button.classList.add('disabled');
                 tableId.value = e.target.getAttribute('data-id');
                 form__triggerTableId.submit()
-                {{!-- window.location.href = '/home' --}}
             }
         });
     });

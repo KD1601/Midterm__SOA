@@ -21,10 +21,50 @@ async function home(req, res, next) {
     }
 }
 
+async function completeOrder(req, res, next) {
+    try {
+        // const foods = await homeServices.getFoodList();
+        // console.log(req.body)
+        // console.log(req.session.maban)
+        // console.log(req.session.manv)
+        const moment = require('moment-timezone');
+        const currentTime = moment().tz('Asia/Ho_Chi_Minh');
+        const formattedTimeDay = currentTime.format('YYYY-MM-DD');
+
+        const donhang = {
+            madonhang: generateRandomCode(),
+            maban: req.session.maban,
+            manhanvien: req.session.manv,
+            ngaytao: formattedTimeDay,
+            thoigianthanhtoan: null,
+            trangthai: "Đang xử lý",
+            tongtien: req.body.total
+        }
+
+        const dataOrder = await homeServices.createOrder(donhang);
+
+        const details = req.body.orderItems
+        for (detail in details) {
+            console.log(details[detail])
+            const mamonan = await homeServices.getMaMonAn(details[detail].name);
+            madon = donhang.madonhang;
+            soluong = details[detail].quantity;
+            ghichu = details[detail].note;
+
+            const dataDetail = await homeServices.createDetailOrder(mamonan, madon, soluong, ghichu);
+        }
+
+        res.end('create order complete');
+    } catch (err) {
+        console.error('Error', err.message);
+        next(err);
+    }
+}
+
 async function getListTable(req, res, next) {
     try {
         const tables = await homeServices.getTables()
-        res.render('choose_table', { tables });
+        res.render('choose_table', { tables, id: req.params.id });
     } catch (err) {
         console.error('Error', err.message);
         next(err);
@@ -119,6 +159,9 @@ async function handleCloseTableEnd(req, res, next) {
 async function handleOpenTable(req, res, next) {
     try {
         const maban = req.body.tableId
+        const manv = req.params.id
+        req.session.maban = maban
+        req.session.manv = manv
         const result = await homeServices.getOpenTable(maban)
         if (result > 0) {
             res.redirect('/home')
@@ -138,4 +181,5 @@ module.exports = {
     handleCloseTableEnd,
     handleOpenTable,
     home,
+    completeOrder,
 };

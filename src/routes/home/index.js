@@ -4,9 +4,10 @@ const homeController = require('../../controllers/home.controller');
 
 router.get('/', homeController.index);
 router.get('/home', homeController.home);
-router.get('/open-table', homeController.getListTable);  
-router.post('/open-table', homeController.handleOpenTable);  
-router.get('/close-table', homeController.getListEndTable);  
+router.post('/home', homeController.completeOrder);
+router.get('/open-table/:id', homeController.getListTable);
+router.post('/open-table/:id', homeController.handleOpenTable);
+router.get('/close-table', homeController.getListEndTable);
 router.post('/close-table', homeController.handleCloseTable);
 router.post('/close-tableEnd', homeController.handleCloseTableEnd);
 

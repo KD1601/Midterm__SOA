@@ -2,7 +2,7 @@ const managerServices = require('../services/manager.service')
 const homeServices = require('../services/home.service')
 async function index(req, res, next) {
     try {
-        res.render('manager-main')
+        res.render('manager-main', { id: req.params.id })
     } catch (err) {
         console.error('An error when direct to manager-main page', err.message);
         next(err);
@@ -40,6 +40,7 @@ async function toHandleSumBillPage(req, res, next) {
 async function toHandleBillHistoryPage(req, res, next) {
     try {
         const bills = await managerServices.getBills()
+        console.log(bills)
         var arrPrice = [];
         if (bills[0].madonhang) {
             for (let i = 0; i < bills.length; i++) {
@@ -69,7 +70,7 @@ async function toHandleDetailOfBillPage(req, res, next) {
             const detail = await homeServices.getBillDetail(req.params.id)
             const cacMaMonAn = detail.map(item => item.mamonan);
             async function getFoods(callback) {
-                const promises = cacMaMonAn.map(async (element) => {
+                const promises = cacMaMonAn.map(async(element) => {
                     let food = await homeServices.getFood(element);
                     return food;
                 });
@@ -86,10 +87,10 @@ async function toHandleDetailOfBillPage(req, res, next) {
                     }
                 });
                 const arr = arrFood.flat()
-                // console.log(arr)
-                res.render('detail-order', {data: arr})
+                    // console.log(arr)
+                res.render('detail-order', { data: arr })
             });
-            
+
         }
     } catch (err) {
         console.error('An error when direct to detail-order page', err.message);
@@ -99,29 +100,29 @@ async function toHandleDetailOfBillPage(req, res, next) {
 
 async function toSelectYear(req, res, next) {
     try {
-        const {year, month, day} = req.body   
-        if(month === undefined) {
+        const { year, month, day } = req.body
+        if (month === undefined) {
             let time = year + '-01-01 00:00:00'
             const listYear = await managerServices.getBillsSelected(time)
-            res.render('manager-bill-history',{bills: listYear})
-        } else if(day == undefined){
+            res.render('manager-bill-history', { bills: listYear })
+        } else if (day == undefined) {
             var time
-            if(month < 10) {
-                time = year + '-0' + month + '-01 00:00:00' 
+            if (month < 10) {
+                time = year + '-0' + month + '-01 00:00:00'
             } else {
-                time = year + '-' + month + '-01 00:00:00' 
-            } 
+                time = year + '-' + month + '-01 00:00:00'
+            }
             const listYear = await managerServices.getBillsSelected(time)
-            res.render('manager-bill-history',{bills: listYear})
+            res.render('manager-bill-history', { bills: listYear })
         } else {
             var time
-            if(month < 10) {
-                time = year + '-0' + month +'-' + day + ' 00:00:00' 
+            if (month < 10) {
+                time = year + '-0' + month + '-' + day + ' 00:00:00'
             } else {
-                time = year + '-' + month  +'-' + day + ' 00:00:00' 
-            } 
+                time = year + '-' + month + '-' + day + ' 00:00:00'
+            }
             const listYear = await managerServices.getBillsSelected(time)
-            res.render('manager-bill-history',{bills: listYear})
+            res.render('manager-bill-history', { bills: listYear })
         }
     } catch (err) {
         console.error('An error when direct to manager-main page', err.message);

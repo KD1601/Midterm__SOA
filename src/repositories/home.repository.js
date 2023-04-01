@@ -66,11 +66,10 @@ async function getFood(mamonan) {
 
 async function createBill(code, madonhang, manv, date) {
     const record = await dbClient.query(
-        `INSERT INTO phieutinhtien (maphieu, madonhang, manhanvien, ngaytao) VALUES (?, ?, ?, ?)`,
-  [code, madonhang, manv, date]
+        `INSERT INTO phieutinhtien (maphieu, madonhang, manhanvien, ngaytao) VALUES (?, ?, ?, ?)`, [code, madonhang, manv, date]
     );
     console.log(record)
-    // return record;
+        // return record;
 };
 async function foodList() {
     const record = await dbClient.query(
@@ -79,6 +78,26 @@ async function foodList() {
     return record;
 }
 
+async function foodId(tenmonan) {
+    const record = await dbClient.query(
+        `SELECT mamonan FROM monan where tenmonan = ?`, [tenmonan]
+    );
+    return record;
+}
+
+async function createO(donhang) {
+    const record = await dbClient.query(
+        `INSERT INTO donhang (madonhang, maban, manhanvien, ngaytao,thoigianthanhtoan,trangthai,tongtien) VALUES (?, ?, ?, ?,?,?,?)`, [donhang.madonhang, donhang.maban, donhang.manhanvien, donhang.ngaytao, donhang.thoigianthanhtoan, donhang.trangthai, donhang.tongtien]
+    );
+    return record;
+};
+
+async function createDetailO(mamonan, madonhang, soluong, ghichu) {
+    const record = await dbClient.query(
+        `INSERT INTO chitietdonhang (mamonan, madonhang, soluong, ghichu) VALUES (?, ?, ?, ?)`, [mamonan, madonhang, soluong, ghichu]
+    );
+    return record;
+};
 
 
 module.exports = {
@@ -92,4 +111,7 @@ module.exports = {
     createBill,
     foodList,
     getBillM,
+    foodId,
+    createO,
+    createDetailO
 }

@@ -118,6 +118,49 @@ async function getFoodList() {
     }
 }
 
+async function getMaMonAn(tenmonan) {
+    try {
+        var results = await repo.foodId(tenmonan)
+        console.log(results[0]);
+        return results[0].mamonan
+    } catch (err) {
+        console.log(err);
+        throw new Error('Service: Something wrong');
+    }
+}
+
+async function createOrder(donhang) {
+    try {
+        var results = await repo.createO(donhang)
+        return results
+    } catch (err) {
+        console.log(err);
+        throw new Error('Service: Something wrong');
+    }
+}
+
+async function createDetailOrder(mamonan, madonhang, soluong, ghichu) {
+    try {
+        var results = await repo.createDetailO(mamonan, madonhang, soluong, ghichu)
+        return results
+    } catch (err) {
+        console.log(err);
+        throw new Error('Service: Something wrong');
+    }
+}
+
 module.exports = {
-    getTables, getEndTables, getCloseTable, getBill, getBillDetail, getFood, getOpenTable, createBill, getFoodList,getBillM,
+    getTables,
+    getEndTables,
+    getCloseTable,
+    getBill,
+    getBillDetail,
+    getFood,
+    getOpenTable,
+    createBill,
+    getFoodList,
+    getBillM,
+    getMaMonAn,
+    createOrder,
+    createDetailOrder
 }

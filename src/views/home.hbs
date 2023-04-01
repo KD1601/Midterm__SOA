@@ -141,33 +141,6 @@
         </div>
 
         <div>
-            <button class="order-his-btn">Món đã đặt</button>
-            <div class="menu-order-complete">
-                <table class="table" id="menu-order-complete-table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Tên món</th>
-                            <th scope="col">Đơn giá</th>
-                            <th scope="col">Số lượng</th>
-                            <th scope="col">Thành tiền</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Gà</td>
-                            <td>50000</td>
-                            <td>2</td>
-                            <td>100000</td>
-                        </tr>
-                        <tr>
-                            <td>Bò</td>
-                            <td>20000</td>
-                            <td>2</td>
-                            <td>40000</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
             <div class="menu-order">
                 <table class="table" id="menu-order-table">
                     <thead>
@@ -223,7 +196,6 @@
     // Lấy tbody element của table
     var tbody = table.getElementsByTagName("tbody")[0];
     var tfoot = table.getElementsByTagName("tfoot")[0];
-    console.log(tfoot)
 
     function increment(event) {
         var counter = event.target.closest(".counter");
@@ -248,7 +220,6 @@
 
         // Kiểm tra nếu tên món đã có trong bảng thì tăng số lượng lên 1 và tính lại cột thành tiền
         var existingRow = Array.from(tbody.rows).find(function (row) {
-            console.log(row.cells[0].innerHTML)
             return row.cells[0].innerHTML == nameCell;
         });
 
@@ -356,6 +327,42 @@
         decrementButton.style.display = "none";
         counters[i].querySelector(".count").style.display = "none";
     }
+
+    $(document).ready(function () {
+
+        // Bắt sự kiện click của nút "Đặt món"
+        $('.order-btn').click(function () {
+
+            // Lấy các giá trị trong tbody
+            var orderItems = [];
+            $('#menu-order-table tbody tr').each(function () {
+                var orderItem = {};
+                orderItem.name = $(this).find('td:eq(0)').text();
+                orderItem.quantity = parseInt($(this).find('td:eq(2)').text());
+                orderItem.note = $(this).find('td:eq(3) input[name="ghichu"]').val();
+                orderItems.push(orderItem);
+            });
+
+            // Lấy giá trị tổng tiền
+            var total = parseInt($('#menu-order-table tfoot td:eq(1)').text());
+
+            // Gửi các giá trị đến đường dẫn /home bằng phương thức POST
+            $.ajax({
+                type: 'POST',
+                url: '/home',
+                data: { orderItems: orderItems, total: total },
+                success: function (response) {
+                    window.location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // Xử lý lỗi nếu cần
+                }
+            });
+
+        });
+
+    });
+
 </script>
 
 </html>
