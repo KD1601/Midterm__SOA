@@ -11,8 +11,8 @@ router.post('/open-table', homeController.handleOpenTable);
 router.get('/close-table', homeController.getListEndTable);  
 router.post('/close-table', homeController.handleCloseTable);
 router.post('/close-tableEnd', homeController.handleCloseTableEnd);
-router.post('/login', homeController.handleLogin);
-router.get('/login', homeController.login);
+// router.post('/login', homeController.handleLogin);
+// router.get('/login', homeController.login);
 
 
 

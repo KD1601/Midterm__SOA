@@ -2,9 +2,9 @@ const dbClient = require('./db_client');
 
 async function handleLogin(username, password) {
     const record = await dbClient.query(
-        `SELECT * FROM taikhoan WHERE tendangnhap = ? && matkhau = ?`, [username, password]
+        `SELECT * FROM accounts WHERE tendangnhap = ? && matkhau = ?`, [username, password]
     );
-    return record;
+    return record[0].tendangnhap;
 };
 
 async function getTables() {
@@ -29,7 +29,6 @@ async function getCloseTable(maban) {
 };
 
 async function getOpenTable(maban) {
-    console.log(maban)
     const record = await dbClient.query(
         `UPDATE ban SET trangthai = 'Đã có khách' WHERE maban = ?`, [maban]
     );
@@ -60,7 +59,6 @@ async function getFood(mamonan) {
 
 
 module.exports = {
-    handleLogin,
     getTables,
     getEndTables,
     getCloseTable,

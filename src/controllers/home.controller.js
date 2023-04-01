@@ -40,34 +40,34 @@ async function getListEndTable(req, res, next) {
     }
 }
 
-async function login(req, res, next) {
-    try {
-        res.render('login');
-    } catch (err) {
-        console.error('Error', err.message);
-        next(err);
-    }
-}
+// async function login(req, res, next) {
+//     try {
+//         res.render('login');
+//     } catch (err) {
+//         console.error('Error', err.message);
+//         next(err);
+//     }
+// }
 
 
-async function handleLogin(req, res, next) {
-    try {
-        const { username, password } = req.body
-        const select = await homeServices.handleLogin(username, password)
-        if (select) {
-            if (select.startsWith("B")) {
-                res.render('kitchen_main')
-            } else {
-                res.render('login')
-            }
-        } else {
-            res.render('login')
-        }
-    } catch (err) {
-        console.error('An error when login', err.message);
-        next(err);
-    }
-}
+// async function handleLogin(req, res, next) {
+//     try {
+//         const { username, password } = req.body
+//         const select = await homeServices.handleLogin(username, password)
+//         if (select) {
+//             if (select.startsWith("B")) {
+//                 res.render('kitchen_main')
+//             } else {
+//                 res.render('login')
+//             }
+//         } else {
+//             res.render('login')
+//         }
+//     } catch (err) {
+//         console.error('An error when login', err.message);
+//         next(err);
+//     }
+// }
 
 async function handleCloseTable(req, res, next) {
     try {
@@ -133,6 +133,6 @@ async function handleOpenTable(req, res, next) {
 }
 
 module.exports = {
-    index, login, handleLogin, getListTable, getListEndTable, handleCloseTable,handleCloseTableEnd,handleOpenTable,
+    index, getListTable, getListEndTable, handleCloseTable,handleCloseTableEnd,handleOpenTable,
     home,
 };

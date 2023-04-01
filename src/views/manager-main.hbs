@@ -37,7 +37,7 @@
         border-color: #e36913;
     }
 
-    .btn__handleFood:hover{
+    .btn__handleFood:hover {
         border-color: #e36913;
         background-color: #975120 !important;
     }
@@ -46,15 +46,26 @@
         --bs-btn-font-size: 1.75rem
     }
 
+    .btn {
+        width: 500px !important;
+    }
+
 </style>
 
 <body id="background__kitchen">
-    <span id="name__employee">Xin chào <b>Van A</b></span>
-    <div class="container h-100 d-flex justify-content-center align-items-center">
-        <div class="list__function">
-            <a href="/manager/sum-bill" class="btn btn-lg btn-success btn__handleFood">Tổng hợp phiếu tính tiền</a>
-            <a href="/manager/bill-history" class="btn btn-lg btn-success">Xem lịch sử phiếu tính tiền</a>
+    <div class="container h-100 ">
+        <div class="list__function my-5 d-flex flex-column gap-4  align-items-center">
+            <a id="btn__openTable" href="/open-table"
+                class="btn btn-lg btn-success btn__handleFood  text-center">Mở bàn</a>
+            <a id="btn__closeTable" href="/close-table"
+                class="btn btn-lg btn-success btn__handleFood  text-center">Kết thúc đơn hàng</a>
+
+            <a href="/manager/sum-bill" class="btn btn-lg btn-success btn__handleFood  text-center">Tổng hợp
+                phiếu tính tiền</a>
+            <a href="/manager/bill-history" class="btn btn-lg btn-success  text-center">Xem lịch sử phiếu
+                tính tiền</a>
         </div>
+
     </div>
 </body>
 

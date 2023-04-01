@@ -14,6 +14,12 @@
     <title>Xem lịch sử tính tiền</title>
 </head>
 
+<style>
+ .footer {
+        display: none;
+    }
+</style>
+
 <body>
     <div class="container">
         <div class="row">
@@ -27,7 +33,8 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <select id="months" style="display: none;" class="form-select" onchange="showDays()" aria-label="Default select example">
+                <select id="months" style="display: none;" class="form-select" onchange="showDays()"
+                    aria-label="Default select example">
                     <option disabled selected>Chọn tháng</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -44,7 +51,8 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <select id="days" class="form-select" style="display: none;" aria-label="Default select example"></select>
+                <select id="days" class="form-select" style="display: none;"
+                    aria-label="Default select example"></select>
             </div>
         </div>
         <table class="table table-striped">
@@ -92,7 +100,7 @@
     </div>
 </body>
 <script>
-    function showMonths(){
+    function showMonths() {
         document.getElementById("months").style.display = "block";
     }
     function showDays() {

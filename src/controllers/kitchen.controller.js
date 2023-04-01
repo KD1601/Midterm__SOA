@@ -32,9 +32,6 @@ async function toHandleDetailOrderPage(req, res, next) {
                 ghichu: order[x].ghichu
             })
         }
-        console.log(data)
-            // const food = await kitchenServices.getFoodName('LAU01')
-            // console.log(food)
         res.render('kitchen-detail-order', { data: data, id: req.params.id })
     } catch (err) {
         console.error('An error when direct to kitchen-order page', err.message);

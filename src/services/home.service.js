@@ -1,19 +1,19 @@
 // Define your services here
 const repo = require('../repositories/home.repository')
 
-async function handleLogin(username,password) {
-    try {
-        var role = await repo.handleLogin(username,password)
-        if(role.length > 0) {
-            return role[0].id
-        } else {
-            return false
-        }
-    } catch (err) {
-        console.log(err);
-        throw new Error('Service: Something wrong');
-    }
-}
+// async function handleLogin(username,password) {
+//     try {
+//         var role = await repo.handleLogin(username,password)
+//         if(role.length > 0) {
+//             return role[0].id
+//         } else {
+//             return false
+//         }
+//     } catch (err) {
+//         console.log(err);
+//         throw new Error('Service: Something wrong');
+//     }
+// }
 
 async function getTables() {
     try {
@@ -94,5 +94,5 @@ async function getFood(mamonan) {
 }
 
 module.exports = {
-    handleLogin,getTables,getEndTables,getCloseTable,getBill,getBillDetail,getFood, getOpenTable
+    getTables,getEndTables,getCloseTable,getBill,getBillDetail,getFood, getOpenTable
 }
