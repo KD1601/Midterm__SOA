@@ -28,31 +28,19 @@
                 </tr>
             </thead>
             <tbody>
+                {{#each data}}
                 <tr>
-                    <th scope="row">Salad Đùi Gà</th>
-                    <td>40.000 VNĐ</td>
-                    <td>2</td>
-                    <td></td>
-                    <td>80.000 VNĐ</td>
+                    <th scope="row">{{this.tenmonan}}</th>
+                    <td>{{this.gia}}</td>
+                    <td>{{this.soluong}}</td>
+                    <td>{{this.ghichu}}</td>
+                    <td>{{formatMoney (multiply this.soluong this.gia)}}</td>
                 </tr>
-               <tr>
-                    <th scope="row">Salad Đùi Gà</th>
-                    <td>40.000 VNĐ</td>
-                    <td>2</td>
-                    <td>Thêm tí bơ</td>
-                    <td>80.000 VNĐ</td>
-                </tr>
-                <tr>
-                    <th scope="row">Salad Đùi Gà</th>
-                    <td>40.000 VNĐ</td>
-                    <td>2</td>
-                    <td></td>
-                    <td>80.000 VNĐ</td>
-                </tr>
+                {{/each}}
                 <tr style="border: none;">
                     <td colspan="3"></td>
                     <th>Tổng tiền:</th>
-                    <th>240.000 VNĐ</th>
+                    <th>{{formatMoney (totalPrice data)}}</th>
                 </tr>
             </tbody>
         </table>
