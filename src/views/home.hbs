@@ -175,6 +175,7 @@
                             <th scope="col">Tên món</th>
                             <th scope="col">Đơn giá</th>
                             <th scope="col">Số lượng</th>
+                            <th scope="col">Ghi chú</th>
                             <th scope="col">Thành tiền</th>
                         </tr>
                     </thead>
@@ -193,7 +194,7 @@
                         </tr> --}}
                     </tbody>
                     <tfoot style="border: none;">
-                        <td colspan="2"></td>
+                        <td colspan="3"></td>
                         <th>Tổng tiền</td>
                         <td>0</td>
                     </tfoot>
@@ -254,7 +255,7 @@
         if (existingRow) {
             var existingQuantity = parseInt(existingRow.cells[2].innerHTML);
             existingRow.cells[2].innerHTML = parseInt(quantityCell);
-            existingRow.cells[3].innerHTML = parseInt(existingRow.cells[1].innerHTML) * parseInt(existingRow.cells[2].innerHTML);
+            existingRow.cells[4].innerHTML = parseInt(existingRow.cells[1].innerHTML) * parseInt(existingRow.cells[2].innerHTML);
         } else {
             // Tạo một row mới
             var newRow = tbody.insertRow();
@@ -267,7 +268,9 @@
             // Tạo một cell mới cho cột "Số lượng"
             var quantityCell = newRow.insertCell(2);
             quantityCell.innerHTML = number;
-            var totalPriceCell = newRow.insertCell(3);
+            var noteCell = newRow.insertCell(3);
+            noteCell.innerHTML = "<input type='text' name='ghichu'>";
+            var totalPriceCell = newRow.insertCell(4);
             totalPriceCell.innerHTML = parseInt(priceCell.innerHTML) * parseInt(quantityCell.innerHTML);
         }
         $(document).ready(function () {
@@ -312,7 +315,7 @@
         if (existingRow) {
             var existingQuantity = parseInt(existingRow.cells[2].innerHTML);
             existingRow.cells[2].innerHTML = parseInt(quantityCell);
-            existingRow.cells[3].innerHTML = parseInt(existingRow.cells[1].innerHTML) * parseInt(existingRow.cells[2].innerHTML);
+            existingRow.cells[4].innerHTML = parseInt(existingRow.cells[1].innerHTML) * parseInt(existingRow.cells[2].innerHTML);
             if (quantityCell == 0) {
                 existingRow.remove();
             }
