@@ -9,8 +9,19 @@ async function getBills() {
     }
 }
 
+async function getBillsSelected(year) {
+    try {
+        var listBill = await repo.getBillsSelected(year)
+        return listBill
+    } catch (err) {
+        console.log(err);
+        throw new Error('Service: Something wrong');
+    }
+}
+
+
 
 
 module.exports = {
-    getBills,
+    getBills,getBillsSelected
 }

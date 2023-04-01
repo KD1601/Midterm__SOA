@@ -18,13 +18,14 @@
     .footer {
         display: none;
     }
+
 </style>
 
 <body>
     <div class="container">
         <div class="row">
             <h1 class="text-center">Lịch sử tính tiền</h1>
-            <form action="#" class="d-flex">
+            <form action="#" class="d-flex justify-content-between" method="POST" id="form__selected">
                 <div class="col-md-2">
                     <select name="year" id="years" class="form-select" onchange="showMonths()"
                         aria-label="Default select example">
@@ -32,11 +33,12 @@
                         <option value="2020">2020</option>
                         <option value="2021">2021</option>
                         <option value="2022">2022</option>
+                        <option value="2023">2023</option>
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <select name="month" id="months" style="display: none;" class="form-select" onchange="showDays()"
-                        aria-label="Default select example">
+                    <select name="month" id="months" class="form-select mx-3" onchange="showDays()"
+                        aria-label="Default select example" disabled>
                         <option disabled selected>Chọn tháng</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -53,9 +55,13 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <select name="day" id="days" class="form-select" style="display: none;"
-                        aria-label="Default select example"></select>
+                    <select name="day" id="days" class="form-select mx-3" 
+                        aria-label="Default select example" disabled>
+                         <option disabled selected>Chọn ngày</option>
+                         </select>
                 </div>
+
+                <button class="btn btn-primary mx-3">Tìm kiếm</button>
             </form>
         </div>
 
@@ -80,42 +86,25 @@
                     <td>{{this.tongtien}}</td>
                 </tr>
                 {{/each}}
-                <tr>
-                    <th scope="row">PH0201</th>
-                    <td><a href="/manager/detail-order/DH0101">DH0101</a></td>
-                    <td>Nguyễn Văn A</td>
-                    <td>19/01/2023</td>
-                    <td>350.000 VNĐ</td>
-                </tr>
-                <tr>
-                    <th scope="row">PH0201</th>
-                    <td><a href="/manager/detail-order/DH0101">DH0101</a></td>
-                    <td>Nguyễn Văn A</td>
-                    <td>19/01/2023</td>
-                    <td>350.000 VNĐ</td>
-                </tr>
-                <tr>
-                    <th scope="row">PH0201</th>
-                    <td><a href="/manager/detail-order/DH0101">DH0101</a></td>
-                    <td>Nguyễn Văn A</td>
-                    <td>19/01/2023</td>
-                    <td>350.000 VNĐ</td>
-                </tr>
-                <tr>
-                    <th scope="row">PH0201</th>
-                    <td><a href="/manager/detail-order/DH0101">DH0101</a></td>
-                    <td>Nguyễn Văn A</td>
-                    <td>19/01/2023</td>
-                    <td>350.000 VNĐ</td>
-                </tr>
+                {{#unless bills }}
+                <td colspan="5" class="text-center"><b>Hiện không có phiếu tính tiền nào vào lúc này</b></td>
+                {{/unless}}
             </tbody>
         </table>
-        <button onclick="history.back()" style="float: left;" type="button" class="btn btn-primary">Trở về</button>
     </div>
+    <form id="formYear" action="#" method="POST" hidden>
+        <input type="text" name="year" id="yearSelected">
+    </form>
 </body>
 <script>
+    const formYear = document.getElementById("formYear")
+    const yearSelected = document.getElementById("yearSelected")
+    const form__selected = document.getElementById("form__selected")
     function showMonths() {
-        document.getElementById("months").style.display = "block";
+        document.getElementById("months").removeAttribute('disabled');
+        {{!-- var selectedYear = event.target.value;
+        yearSelected.value = selectedYear
+        formYear.submit() --}}
     }
     function showDays() {
         var month = document.getElementById("months").value;
@@ -126,7 +115,7 @@
             select += "<option value='" + i + "'>" + i + "</option>";
         }
         document.getElementById("days").innerHTML = select;
-        document.getElementById("days").style.display = "block";
+        document.getElementById("days").removeAttribute('disabled');
     }
 </script>
 

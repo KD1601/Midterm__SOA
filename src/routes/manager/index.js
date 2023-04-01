@@ -7,6 +7,7 @@ const managerController = require('../../controllers/manager.controller');
 router.get('/', managerController.index);
 router.get('/sum-bill', managerController.toHandleSumBillPage);
 router.get('/bill-history', managerController.toHandleBillHistoryPage);
+router.post('/bill-history', managerController.toSelectYear);
 router.get('/detail-order/:id', managerController.toHandleDetailOfBillPage);
 
 module.exports = router;
