@@ -53,9 +53,17 @@ header .login {
         bottom: 90px;
         right: 24px;
     }
+    .list-order-btn {
+        bottom: 90px;
+        right: 24px;
+    }
 }
 
 .order-btn:hover {
+    background-color: #e11919;
+}
+
+.list-order-btn:hover {
     background-color: #e11919;
 }
 

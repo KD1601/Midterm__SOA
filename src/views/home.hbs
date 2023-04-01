@@ -28,6 +28,26 @@
             border-radius: 5px;
             font-size: 1.2rem;
         }
+
+        .list-order-btn {
+            position: fixed;
+            bottom: 90px;
+            right: 150px;
+            z-index: 9999;
+            background-color: #17aeb6;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            margin-left: 55%;
+        }
+
+        #log-order {
+            display: none;
+        }
     </style>
 </head>
 
@@ -88,7 +108,7 @@
         </div>
 
         <div>
-            <div class="menu-order">
+            <div class="menu-order" id="log-order">
                 <table class="table" id="menu-order-table">
                     <thead>
                         <tr>
@@ -120,6 +140,7 @@
                     </tfoot>
                 </table>
             </div>
+            <button onclick="toggleLog()" class="list-order-btn">Món đang gọi</button>
             <button class="order-btn">Đặt món</button>
         </div>
     </div>
@@ -127,6 +148,14 @@
 
 </body>
 <script>
+    function toggleLog() {
+        var log = document.getElementById("log-order");
+        if (log.style.display === "none") {
+            log.style.display = "block";
+        } else {
+            log.style.display = "none";
+        }
+    }
     // Lấy tất cả các phần tử có class là "product-price"
     const productPrices = document.querySelectorAll('.product-price');
 
