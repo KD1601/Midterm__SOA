@@ -42,6 +42,14 @@ async function getBill(maban) {
     return record;
 };
 
+async function getBillM(madonhang) {
+    const record = await dbClient.query(
+        `SELECT * FROM donhang where madonhang = ?`, [madonhang]
+    );
+    return record;
+};
+
+
 async function getBillDetail(madonhang) {
     const record = await dbClient.query(
         `SELECT * FROM chitietdonhang where madonhang = ?`, [madonhang]
@@ -82,5 +90,6 @@ module.exports = {
     getFood,
     getOpenTable,
     createBill,
-    foodList
+    foodList,
+    getBillM,
 }

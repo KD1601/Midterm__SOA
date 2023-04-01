@@ -1,3 +1,5 @@
+const managerServices = require('../services/manager.service')
+const homeServices = require('../services/home.service')
 async function index(req, res, next) {
     try {
         res.render('manager-main')
@@ -9,7 +11,26 @@ async function index(req, res, next) {
 
 async function toHandleSumBillPage(req, res, next) {
     try {
-        res.render('manager-sum-bill')
+        const bills = await managerServices.getBills()
+        var arrPrice = [];
+        if (bills[0].madonhang) {
+            for (let i = 0; i < bills.length; i++) {
+                const billdetails = await homeServices.getBillM(bills[i].madonhang)
+                arrPrice.push(billdetails[0].tongtien)
+            }
+
+            for (let i = 0; i < bills.length; i++) {
+                const bill = bills[i];
+                const total = arrPrice[i];
+                bill.tongtien = total;
+            }
+
+            res.render('manager-sum-bill', {
+                bills: bills
+            })
+        }
+
+
     } catch (err) {
         console.error('An error when direct to manager-sum-bill page', err.message);
         next(err);

@@ -60,6 +60,16 @@ async function getBill(maban) {
     }
 }
 
+async function getBillM(madonhang) {
+    try {
+        var results = await repo.getBillM(madonhang)
+        return results
+    } catch (err) {
+        console.log(err);
+        throw new Error('Service: Something wrong');
+    }
+}
+
 async function getBillDetail(madonhang) {
     try {
         var results = await repo.getBillDetail(madonhang)
@@ -109,5 +119,5 @@ async function getFoodList() {
 }
 
 module.exports = {
-    getTables, getEndTables, getCloseTable, getBill, getBillDetail, getFood, getOpenTable, createBill, getFoodList,
+    getTables, getEndTables, getCloseTable, getBill, getBillDetail, getFood, getOpenTable, createBill, getFoodList,getBillM,
 }
