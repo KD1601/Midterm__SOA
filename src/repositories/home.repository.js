@@ -1,9 +1,8 @@
 const dbClient = require('./db_client');
 
-async function handleLogin(username,password) {
+async function handleLogin(username, password) {
     const record = await dbClient.query(
-        `SELECT * FROM taikhoan WHERE tendangnhap = ? && matkhau = ?`,
-        [username, password]
+        `SELECT * FROM taikhoan WHERE tendangnhap = ? && matkhau = ?`, [username, password]
     );
     return record;
 };
@@ -17,14 +16,14 @@ async function getTables() {
 
 async function getEndTables() {
     const record = await dbClient.query(
-        `SELECT * FROM ban where trangthai = "mo"`
+        `SELECT * FROM ban where trangthai = "Đã có khách"`
     );
     return record;
 };
 
 async function getCloseTable(maban) {
     const record = await dbClient.query(
-        `UPDATE ban SET trangthai = 'dong' WHERE maban = ?`,[maban]
+        `UPDATE ban SET trangthai = 'Còn trống' WHERE maban = ?`, [maban]
     );
     return record.changedRows;
 };
@@ -32,28 +31,28 @@ async function getCloseTable(maban) {
 async function getOpenTable(maban) {
     console.log(maban)
     const record = await dbClient.query(
-        `UPDATE ban SET trangthai = 'mo' WHERE maban = ?`,[maban]
+        `UPDATE ban SET trangthai = 'Đã có khách' WHERE maban = ?`, [maban]
     );
     return record.changedRows;
 };
 
 async function getBill(maban) {
     const record = await dbClient.query(
-        `SELECT * FROM donhang where maban = ?`,[maban]
+        `SELECT * FROM donhang where maban = ?`, [maban]
     );
     return record;
 };
 
 async function getBillDetail(madonhang) {
     const record = await dbClient.query(
-        `SELECT * FROM chitietdonhang where madonhang = ?`,[madonhang]
+        `SELECT * FROM chitietdonhang where madonhang = ?`, [madonhang]
     );
     return record;
 };
 
 async function getFood(mamonan) {
     const record = await dbClient.query(
-        `SELECT * FROM monan where mamonan = ?`,[mamonan]
+        `SELECT * FROM monan where mamonan = ?`, [mamonan]
     );
     return record;
 };
@@ -61,5 +60,12 @@ async function getFood(mamonan) {
 
 
 module.exports = {
-    handleLogin,getTables,getEndTables,getCloseTable,getBill,getBillDetail,getFood, getOpenTable
+    handleLogin,
+    getTables,
+    getEndTables,
+    getCloseTable,
+    getBill,
+    getBillDetail,
+    getFood,
+    getOpenTable
 }
