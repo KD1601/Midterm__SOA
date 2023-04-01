@@ -56,6 +56,13 @@ async function getFood(mamonan) {
     return record;
 };
 
+async function foodList() {
+    const record = await dbClient.query(
+        `SELECT * FROM monan`
+    );
+    return record;
+}
+
 
 
 module.exports = {
@@ -65,5 +72,6 @@ module.exports = {
     getBill,
     getBillDetail,
     getFood,
-    getOpenTable
+    getOpenTable,
+    foodList
 }

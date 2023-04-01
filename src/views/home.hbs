@@ -70,64 +70,23 @@
                 </div>
             </div>
             <div class="col py-3 bg-dark">
-                <div class="product-row">
-                    <div class="product-card">
-                        <img class="product-image" src="https://cdn.tgdd.vn/2021/01/CookProduct/thum-1200x676-9.jpg"
+                <div class="product-row row">
+                    {{#each data}}
+                    <div class="product-card col-md-5">
+                        <img class="product-image" src="{{hinhanh}}"
                             alt="Product 1">
                         <div class="product-info">
-                            <h3 class="product-name">Thịt ba chỉ</h3>
-                            <h4 class="product-price">49.000đ</h4>
-                            <div class="quantity-control">
-                                <button class="quantity-btn">-</button>
-                                <span class="quantity-value">1</span>
-                                <button class="quantity-btn">+</button>
+                            <h3 class="product-name">{{tenmonan}}</h3>
+                            <h4 class="product-price">{{gia}}</h4>
+                            <div class="quantity-control justify-content-around counter">
+                                <button class="quantity-btn decrement">-</button>
+                                <span class="quantity-value count">0</span>
+                                <button class="quantity-btn increment">+</button>
                             </div>
                         </div>
                     </div>
-                    <div class="product-card">
-                        <img class="product-image" src="https://cdn.tgdd.vn/2021/01/CookProduct/thum-1200x676-9.jpg"
-                            alt="Product 1">
-                        <div class="product-info">
-                            <h3 class="product-name">Thịt ba chỉ</h3>
-                            <h4 class="product-price">49.000đ</h4>
-                            <div class="quantity-control">
-                                <button class="quantity-btn">-</button>
-                                <span class="quantity-value">1</span>
-                                <button class="quantity-btn">+</button>
-                            </div>
-                        </div>
-                    </div>
+                    {{/each}}
                 </div>
-
-                <div class="product-row">
-                    <div class="product-card">
-                        <img class="product-image" src="https://cdn.tgdd.vn/2021/01/CookProduct/thum-1200x676-9.jpg"
-                            alt="Product 1">
-                        <div class="product-info">
-                            <h3 class="product-name">Thịt ba chỉ</h3>
-                            <h4 class="product-price">49.000đ</h4>
-                            <div class="quantity-control">
-                                <button class="quantity-btn">-</button>
-                                <span class="quantity-value">1</span>
-                                <button class="quantity-btn">+</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <img class="product-image" src="https://cdn.tgdd.vn/2021/01/CookProduct/thum-1200x676-9.jpg"
-                            alt="Product 1">
-                        <div class="product-info">
-                            <h3 class="product-name">Thịt ba chỉ</h3>
-                            <h4 class="product-price">49.000đ</h4>
-                            <div class="quantity-control">
-                                <button class="quantity-btn">-</button>
-                                <span class="quantity-value">1</span>
-                                <button class="quantity-btn">+</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
         <div>
@@ -138,5 +97,57 @@
 
 
 </body>
+<script>
+    // Lấy tất cả các phần tử có class là "product-price"
+    const productPrices = document.querySelectorAll('.product-price');
+
+    // Lặp qua từng phần tử và định dạng lại giá tiền
+    productPrices.forEach(price => {
+        const rawPrice = parseInt(price.textContent); // Lấy giá tiền ban đầu
+        const formattedPrice = rawPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }); // Định dạng lại giá tiền
+        price.textContent = formattedPrice; // Cập nhật lại giá tiền đã định dạng
+    });
+
+    var counters = document.querySelectorAll(".counter");
+
+    function increment(event) {
+        var counter = event.target.closest(".counter");
+        var count = parseInt(counter.querySelector(".count").innerHTML);
+        count += 1;
+        counter.querySelector(".count").innerHTML = count;
+        if (count === 0) {
+            counter.querySelector(".decrement").style.display = "none";
+            counter.querySelector(".count").style.display = "none";
+        } else {
+            counter.querySelector(".decrement").style.display = "inline-block";
+            counter.querySelector(".count").style.display = "inline-block";
+        }
+    }
+
+    function decrement(event) {
+        var counter = event.target.closest(".counter");
+        var count = parseInt(counter.querySelector(".count").innerHTML);
+        count -= 1;
+        counter.querySelector(".count").innerHTML = count;
+        if (count === 0) {
+            counter.querySelector(".decrement").style.display = "none";
+            counter.querySelector(".count").style.display = "none";
+        } else {
+            counter.querySelector(".decrement").style.display = "inline-block";
+            counter.querySelector(".count").style.display = "inline-block";
+        }
+    }
+
+    for (var i = 0; i < counters.length; i++) {
+        var decrementButton = counters[i].querySelector(".decrement");
+        var incrementButton = counters[i].querySelector(".increment");
+        decrementButton.addEventListener("click", decrement);
+        incrementButton.addEventListener("click", increment);
+        decrementButton.style.display = "none";
+        counters[i].querySelector(".count").style.display = "none";
+    }
+
+
+</script>
 
 </html>

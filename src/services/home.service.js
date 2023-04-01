@@ -18,7 +18,7 @@ const repo = require('../repositories/home.repository')
 async function getTables() {
     try {
         var listTable = await repo.getTables()
-        if(listTable.length > 0) {
+        if (listTable.length > 0) {
             return listTable
         } else {
             return false
@@ -32,7 +32,7 @@ async function getTables() {
 async function getEndTables() {
     try {
         var listTable = await repo.getEndTables()
-        if(listTable.length > 0) {
+        if (listTable.length > 0) {
             return listTable
         } else {
             return false
@@ -93,6 +93,23 @@ async function getFood(mamonan) {
     }
 }
 
+async function getFoodList() {
+    try {
+        var results = await repo.foodList()
+        return results
+    } catch (err) {
+        console.log(err);
+        throw new Error('Service: Something wrong');
+    }
+}
+
 module.exports = {
-    getTables,getEndTables,getCloseTable,getBill,getBillDetail,getFood, getOpenTable
+    getTables,
+    getEndTables,
+    getCloseTable,
+    getBill,
+    getBillDetail,
+    getFood,
+    getOpenTable,
+    getFoodList
 }
