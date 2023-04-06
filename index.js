@@ -7,7 +7,6 @@ const path = require('path');
 const Handlebars = require('handlebars');
 const sessions = require('express-session');
 const flashMessage = require('./src/middlewares/flash_message');
-
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || 'localhost';
 

@@ -52,6 +52,7 @@
 </head>
 
 <body>
+
     <div class="container-fluid">
         <div class="row flex-nowrap">
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
@@ -88,7 +89,7 @@
                 </div>
             </div>
             <div class="col py-3 bg-dark">
-                <div class="product-row row">
+                <div id="food__list" class="product-row row">
                     {{#each data}}
                     <div class="product-card col-md-5">
                         <img class="product-image" src="{{hinhanh}}" alt="Product 1">
@@ -103,7 +104,10 @@
                         </div>
                     </div>
                     {{/each}}
+
                 </div>
+
+
             </div>
         </div>
 
@@ -120,18 +124,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{!-- <tr>
-                            <td>Gà</td>
-                            <td>50000</td>
-                            <td>2</td>
-                            <td>100000</td>
-                        </tr>
-                        <tr>
-                            <td>Bò</td>
-                            <td>20000</td>
-                            <td>2</td>
-                            <td>40000</td>
-                        </tr> --}}
                     </tbody>
                     <tfoot style="border: none;">
                         <td colspan="3"></td>
@@ -328,7 +320,9 @@
                 url: '/home',
                 data: { orderItems: orderItems, total: total },
                 success: function (response) {
-                    window.location.reload();
+                    
+                    window.scrollTo(0, 0);
+                    window.location.reload(); 
                 },
                 error: function (xhr, status, error) {
                     // Xử lý lỗi nếu cần

@@ -11,13 +11,32 @@ async function index(req, res, next) {
     }
 }
 
-async function home(req, res, next) {
+async function homeAPI(req, res, next) {
     try {
-        let foods = await homeServices.getFoodList();
+        var foods = {}
         if (req.params.filter) {
             foods = await homeServices.getFoodListFilter(req.params.filter);
+        } else {
+            foods = await homeServices.getFoodList();
         }
-        res.render('home', { data: foods });
+        return res.json({ foods });
+    } catch (err) {
+        console.error('Error', err.message);
+        next(err);
+    }
+}
+
+async function home(req, res, next) {
+    try {
+        var response = {}
+        if(req.params.filter) {
+            response = await fetch(`http://localhost:3000/api/home/${req.params.filter}`);
+        } else {
+            response = await fetch(`http://localhost:3000/api/home/`);
+        }
+        
+        const data = await response.json();
+        res.render('home', { data: data.foods });
     } catch (err) {
         console.error('Error', err.message);
         next(err);
@@ -26,10 +45,6 @@ async function home(req, res, next) {
 
 async function completeOrder(req, res, next) {
     try {
-        // const foods = await homeServices.getFoodList();
-        // console.log(req.body)
-        // console.log(req.session.maban)
-        // console.log(req.session.manv)
         const moment = require('moment-timezone');
         const currentTime = moment().tz('Asia/Ho_Chi_Minh');
         const formattedTimeDay = currentTime.format('YYYY-MM-DD');
@@ -56,7 +71,9 @@ async function completeOrder(req, res, next) {
 
             const dataDetail = await homeServices.createDetailOrder(mamonan, madon, soluong, ghichu);
         }
-
+        req.session.flash = {
+            message: `Đơn hàng đã được chuyển đến nhân viên bếp. Cảm ơn quý khách đã gọi món`,
+        }
         res.end('create order complete');
     } catch (err) {
         console.error('Error', err.message);
@@ -87,14 +104,14 @@ async function getListEndTable(req, res, next) {
 async function handleCloseTable(req, res, next) {
     try {
         const maban = req.body.tableId
-            // const result = await homeServices.getCloseTable(maban)
+        // const result = await homeServices.getCloseTable(maban)
         const bill = await homeServices.getBill(maban)
         var arrFood = [];
         if (bill[0].madonhang) {
             var billdetails = await homeServices.getBillDetail(bill[0].madonhang)
             const cacMaMonAn = billdetails.map(item => item.mamonan);
             async function getFoods(callback) {
-                const promises = cacMaMonAn.map(async(element) => {
+                const promises = cacMaMonAn.map(async (element) => {
                     let food = await homeServices.getFood(element);
                     return food;
                 });
@@ -185,4 +202,5 @@ module.exports = {
     handleOpenTable,
     home,
     completeOrder,
+    homeAPI,
 };
