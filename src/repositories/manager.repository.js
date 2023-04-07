@@ -8,7 +8,6 @@ async function getBills() {
 };
 
 async function getBillsSelected(year) {
-    console.log(year)
     const record = await dbClient.query(
         `SELECT * FROM phieutinhtien where ngaytao >= ?`, [year]
     );
@@ -19,5 +18,6 @@ async function getBillsSelected(year) {
 
 
 module.exports = {
-    getBills,getBillsSelected
+    getBills,
+    getBillsSelected
 }
