@@ -12,8 +12,20 @@ async function index(req, res, next) {
 
 async function toHandleOrderPage(req, res, next) {
     try {
-        const orders = await kitchenServices.getOrders()
+        var response = {}
+        response = await fetch(`http://localhost:3000/kitchen/api/handle-order`);
+        const orders = await response.json();
         res.render('kitchen-order', { data: orders })
+    } catch (err) {
+        console.error('An error when direct to kitchen-order page', err.message);
+        next(err);
+    }
+}
+
+async function toHandleOrderPageApi(req, res, next) {
+    try {
+        const orders = await kitchenServices.getOrders()
+        res.json(orders)
     } catch (err) {
         console.error('An error when direct to kitchen-order page', err.message);
         next(err);
@@ -61,9 +73,36 @@ async function changeFoodStatus(req, res, next) {
 
 async function completeOrder(req, res, next) {
     try {
-        console.log(req.body)
-        const change = await kitchenServices.completeOrder(req.body.madonhang, "Đã xử lý")
+        const options = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ madonhang: req.body.madonhang })
+        };
+
+          
+        const response = await fetch('http://localhost:3000/kitchen/api/handle-order', options);
+        const data = await response.json();
+        
         res.render('kitchen-food')
+    } catch (err) {
+        console.error('An error when direct to kitchen-food page', err.message);
+        next(err);
+    }
+}
+
+async function completeOrderAPI(req, res, next) {
+    try {
+        
+        const change = await kitchenServices.completeOrder(req.body.madonhang, "Đã xử lý")
+        console.log(change.changedRows)
+        if(change.changedRows == 1) {
+            res.json({message: 'update order success'})
+        }else {
+            res.json({message: 'update order failed'})
+        }
+
     } catch (err) {
         console.error('An error when direct to kitchen-food page', err.message);
         next(err);
@@ -76,5 +115,7 @@ module.exports = {
     toHandleDetailOrderPage,
     toHandleFoodPage,
     changeFoodStatus,
-    completeOrder
+    completeOrder,
+    toHandleOrderPageApi,
+    completeOrderAPI,
 };

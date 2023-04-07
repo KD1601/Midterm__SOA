@@ -5,8 +5,14 @@ const kitchenController = require('../../controllers/kitchen.controller');
 // Define your file routes here
 // E.g:
 router.get('/', kitchenController.index);
+
 router.get('/handle-order', kitchenController.toHandleOrderPage);
+router.get('/api/handle-order', kitchenController.toHandleOrderPageApi);
+
 router.post('/handle-order', kitchenController.completeOrder);
+router.post('/api/handle-order', kitchenController.completeOrderAPI);
+
+
 router.get('/handle-order/:id', kitchenController.toHandleDetailOrderPage);
 router.get('/handle-food', kitchenController.toHandleFoodPage);
 router.post('/handle-food', kitchenController.changeFoodStatus);

@@ -319,10 +319,8 @@
                 type: 'POST',
                 url: '/home',
                 data: { orderItems: orderItems, total: total },
-                success: function (response) {
-                    
-                    window.scrollTo(0, 0);
-                    window.location.reload(); 
+                success: function (response) { 
+                    window.location.href = '/home'
                 },
                 error: function (xhr, status, error) {
                     // Xử lý lỗi nếu cần

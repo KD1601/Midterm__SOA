@@ -5,11 +5,19 @@ const homeController = require('../../controllers/home.controller');
 router.get('/', homeController.index);
 router.get('/home/:filter?', homeController.home);
 router.get('/api/home/:filter?', homeController.homeAPI);
+
 // router.get('/home/:filter', homeController.home);
 router.post('/home', homeController.completeOrder);
+
 router.get('/open-table/:id', homeController.getListTable);
+router.get('/api/open-table/:id?', homeController.getListTableApi);
+
+
 router.post('/open-table/:id', homeController.handleOpenTable);
+
 router.get('/close-table', homeController.getListEndTable);
+router.get('/api/close-table', homeController.getListEndTableApi);
+
 router.post('/close-table', homeController.handleCloseTable);
 router.post('/close-tableEnd', homeController.handleCloseTableEnd);
 

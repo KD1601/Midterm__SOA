@@ -29,12 +29,12 @@ async function homeAPI(req, res, next) {
 async function home(req, res, next) {
     try {
         var response = {}
-        if(req.params.filter) {
+        if (req.params.filter) {
             response = await fetch(`http://localhost:3000/api/home/${req.params.filter}`);
         } else {
             response = await fetch(`http://localhost:3000/api/home/`);
         }
-        
+
         const data = await response.json();
         res.render('home', { data: data.foods });
     } catch (err) {
@@ -83,8 +83,20 @@ async function completeOrder(req, res, next) {
 
 async function getListTable(req, res, next) {
     try {
-        const tables = await homeServices.getTables()
+        var response = {}
+        response = await fetch(`http://localhost:3000/api/open-table`);
+        const tables = await response.json();
         res.render('choose_table', { tables, id: req.params.id });
+    } catch (err) {
+        console.error('Error', err.message);
+        next(err);
+    }
+}
+
+async function getListTableApi(req, res, next) {
+    try {
+        const tables = await homeServices.getTables()
+        res.json(tables)
     } catch (err) {
         console.error('Error', err.message);
         next(err);
@@ -93,8 +105,20 @@ async function getListTable(req, res, next) {
 
 async function getListEndTable(req, res, next) {
     try {
-        const tables = await homeServices.getEndTables()
+        var response = {}
+        response = await fetch(`http://localhost:3000/api/close-table`);
+        const tables = await response.json();
         res.render('choose_endTable', { tables });
+    } catch (err) {
+        console.error('Error', err.message);
+        next(err);
+    }
+}
+
+async function getListEndTableApi(req, res, next) {
+    try {
+        const tables = await homeServices.getEndTables()
+        res.json(tables)
     } catch (err) {
         console.error('Error', err.message);
         next(err);
@@ -180,6 +204,8 @@ async function handleOpenTable(req, res, next) {
     try {
         const maban = req.body.tableId
         const manv = req.params.id
+        console.log(maban)
+        console.log(manv)
         req.session.maban = maban
         req.session.manv = manv
         const result = await homeServices.getOpenTable(maban)
@@ -203,4 +229,6 @@ module.exports = {
     home,
     completeOrder,
     homeAPI,
+    getListTableApi,
+    getListEndTableApi,
 };
