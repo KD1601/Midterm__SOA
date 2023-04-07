@@ -128,14 +128,14 @@ async function getListEndTableApi(req, res, next) {
 async function handleCloseTable(req, res, next) {
     try {
         const maban = req.body.tableId
-        // const result = await homeServices.getCloseTable(maban)
+            // const result = await homeServices.getCloseTable(maban)
         const bill = await homeServices.getBill(maban)
         var arrFood = [];
         if (bill[0].madonhang) {
             var billdetails = await homeServices.getBillDetail(bill[0].madonhang)
             const cacMaMonAn = billdetails.map(item => item.mamonan);
             async function getFoods(callback) {
-                const promises = cacMaMonAn.map(async (element) => {
+                const promises = cacMaMonAn.map(async(element) => {
                     let food = await homeServices.getFood(element);
                     return food;
                 });
