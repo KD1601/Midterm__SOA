@@ -15,6 +15,10 @@ router.post('/api/handle-order', kitchenController.completeOrderAPI);
 
 router.get('/handle-order/:id', kitchenController.toHandleDetailOrderPage);
 router.get('/handle-food', kitchenController.toHandleFoodPage);
+router.get('/api/handle-food', kitchenController.toHandleFoodPageAPI);
+
+
 router.post('/handle-food', kitchenController.changeFoodStatus);
+router.post('/api/handle-food', kitchenController.changeFoodStatusAPI);
 
 module.exports = router;

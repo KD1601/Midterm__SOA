@@ -43,7 +43,13 @@ async function getCloseTable(maban) {
 async function getOpenTable(maban) {
     try {
         var result = await repo.getOpenTable(maban)
-        return result
+        if(result == 1) {
+            return {message: "Open table successfully",
+        results: result}
+        }  else {
+            return {message: "Open table failed",
+            results: result}
+        }
     } catch (err) {
         console.log(err);
         throw new Error('Service: Something wrong');
@@ -93,6 +99,7 @@ async function getFood(mamonan) {
 async function createBill(code, madonhang, manv, date) {
     try {
         var results = await repo.createBill(code, madonhang, manv, date)
+        return results
         async function getFoodList() {
             try {
                 var results = await repo.foodList()

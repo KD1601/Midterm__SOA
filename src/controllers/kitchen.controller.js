@@ -53,8 +53,21 @@ async function toHandleDetailOrderPage(req, res, next) {
 
 async function toHandleFoodPage(req, res, next) {
     try {
-        const foods = await kitchenServices.getFoods()
+        var response = {}
+        response = await fetch(`http://localhost:3000/kitchen/api/handle-food`);
+        const foods = await response.json();
+
         res.render('kitchen-food', { data: foods })
+    } catch (err) {
+        console.error('An error when direct to kitchen-food page', err.message);
+        next(err);
+    }
+}
+
+async function toHandleFoodPageAPI(req, res, next) {
+    try {
+        const foods = await kitchenServices.getFoods()
+        res.json(foods)
     } catch (err) {
         console.error('An error when direct to kitchen-food page', err.message);
         next(err);
@@ -63,8 +76,36 @@ async function toHandleFoodPage(req, res, next) {
 
 async function changeFoodStatus(req, res, next) {
     try {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ mamonan: req.body.mamonan, trangthai: req.body.trangthai })
+        };
+
+
+        const response = await fetch('http://localhost:3000/kitchen/api/handle-food', options);
+        const data = await response.json();
+        res.render('kitchen-food');
+
+    } catch (err) {
+        console.error('An error when direct to kitchen-food page', err.message);
+        next(err);
+    }
+}
+
+async function changeFoodStatusAPI(req, res, next) {
+    try {
         const change = await kitchenServices.changeStatus(req.body.mamonan, req.body.trangthai)
-        res.render('kitchen-food')
+        if (change.changedRows == 1) {
+            res.json({
+                message: 'update order success',
+                status: true
+            })
+        } else {
+            res.json({ message: 'update order failed' })
+        }
     } catch (err) {
         console.error('An error when direct to kitchen-food page', err.message);
         next(err);
@@ -76,15 +117,15 @@ async function completeOrder(req, res, next) {
         const options = {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({ madonhang: req.body.madonhang })
         };
 
-          
+
         const response = await fetch('http://localhost:3000/kitchen/api/handle-order', options);
         const data = await response.json();
-        
+
         res.render('kitchen-food')
     } catch (err) {
         console.error('An error when direct to kitchen-food page', err.message);
@@ -94,13 +135,12 @@ async function completeOrder(req, res, next) {
 
 async function completeOrderAPI(req, res, next) {
     try {
-        
+
         const change = await kitchenServices.completeOrder(req.body.madonhang, "Đã xử lý")
-        console.log(change.changedRows)
-        if(change.changedRows == 1) {
-            res.json({message: 'update order success'})
-        }else {
-            res.json({message: 'update order failed'})
+        if (change.changedRows == 1) {
+            res.json({ message: 'update order success' })
+        } else {
+            res.json({ message: 'update order failed' })
         }
 
     } catch (err) {
@@ -118,4 +158,6 @@ module.exports = {
     completeOrder,
     toHandleOrderPageApi,
     completeOrderAPI,
+    toHandleFoodPageAPI,
+    changeFoodStatusAPI,
 };

@@ -125,7 +125,7 @@ async function getListEndTableApi(req, res, next) {
     }
 }
 
-async function handleCloseTable(req, res, next) {
+async function handleCloseTableAPI(req, res, next) {
     try {
         const maban = req.body.tableId
         // const result = await homeServices.getCloseTable(maban)
@@ -152,9 +152,31 @@ async function handleCloseTable(req, res, next) {
                     }
                 });
                 const arr = arrFood.flat()
-                res.render('choose_endTable', { foods: arr, maban: maban })
+                res.json({ foods: arr, maban: maban })
             });
         }
+    } catch (err) {
+        console.error('Error', err.message);
+        next(err);
+    }
+}
+
+async function handleCloseTable(req, res, next) {
+    try {
+        const maban = req.body.tableId
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ tableId: maban })
+        };
+
+        var response = {}
+        response = await fetch('http://localhost:3000/api/close-table', options);
+        const result = await response.json();
+        res.render('choose_endTable', { foods: result.foods, maban: result.maban })
     } catch (err) {
         console.error('Error', err.message);
         next(err);
@@ -179,7 +201,7 @@ function generateRandomCode() {
     return code;
 }
 
-async function handleCloseTableEnd(req, res, next) {
+async function handleCloseTableEndAPI(req, res, next) {
     try {
         const maban = req.body.tableId
         const manv = req.body.employeeId
@@ -190,8 +212,41 @@ async function handleCloseTableEnd(req, res, next) {
         const currentTime = moment().tz('Asia/Ho_Chi_Minh');
         const formattedTime = currentTime.format('YYYY-MM-DD HH:mm:ss');
         const bill = await homeServices.createBill(randomCode, billCode[0].madonhang, manv, formattedTime)
-        req.session.flash = {
-            message: `Phiếu tính tiền ${randomCode} đã được tạo thành công vào lúc ${formattedTime}`,
+        res.json({
+            message: "Create bill successfully",
+            billStatus: bill,
+            billCode: randomCode,
+            timeCreated: formattedTime
+        })
+    } catch (err) {
+        console.error('Error', err.message);
+        next(err);
+    }
+}
+
+async function handleCloseTableEnd(req, res, next) {
+    try {
+        const maban = req.body.tableId
+        const manv = req.body.employeeId
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ tableId: maban, employeeId: manv })
+        };
+
+        var response = {}
+        response = await fetch('http://localhost:3000/api/close-tableEnd', options);
+        const result = await response.json();
+        if(result.billStatus == 1) {
+            req.session.flash = {
+                message: `Phiếu tính tiền ${result.billCode} đã được tạo thành công vào lúc ${result.timeCreated}`,
+            }
+        } else {
+            req.session.flash = {
+                message: `Tạo phiếu tính tiền ${result.billCode} thất bại`,
+            }
         }
         res.redirect('/close-table')
     } catch (err) {
@@ -200,18 +255,57 @@ async function handleCloseTableEnd(req, res, next) {
     }
 }
 
+
+
 async function handleOpenTable(req, res, next) {
     try {
         const maban = req.body.tableId
         const manv = req.params.id
-        console.log(maban)
-        console.log(manv)
+        req.session.maban = maban
+        req.session.manv = manv
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                maban: maban,
+                manv: manv
+            })
+        };
+
+        var response = {}
+        response = await fetch('http://localhost:3000/api/open-table/:id', options);
+        const result = await response.json();
+        if (result.result > 0) {
+            req.session.flash = {
+                message: `Mở bàn ${maban} thành công!`,
+            }
+        } else {
+            req.session.flash = {
+                message: `Có lỗi xảy ra khi mở bàn ${maban}!`,
+            }
+        }
+
+        res.redirect('/home')
+
+    } catch (err) {
+        console.error('Error', err.message);
+        next(err);
+    }
+}
+
+async function handleOpenTableAPI(req, res, next) {
+    try {
+        const maban = req.body.maban
+        const manv = req.body.manv
         req.session.maban = maban
         req.session.manv = manv
         const result = await homeServices.getOpenTable(maban)
-        if (result > 0) {
-            res.redirect('/home')
-        }
+        const check = result.results
+
+        res.json({ result: check })
 
     } catch (err) {
         console.error('Error', err.message);
@@ -231,4 +325,7 @@ module.exports = {
     homeAPI,
     getListTableApi,
     getListEndTableApi,
+    handleOpenTableAPI,
+    handleCloseTableAPI,
+    handleCloseTableEndAPI,
 };

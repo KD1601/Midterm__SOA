@@ -87,7 +87,6 @@ async function toHandleDetailOfBillPage(req, res, next) {
                     }
                 });
                 const arr = arrFood.flat()
-                    // console.log(arr)
                 res.render('detail-order', { data: arr })
             });
 

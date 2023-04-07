@@ -62,8 +62,7 @@ async function createBill(code, madonhang, manv, date) {
     const record = await dbClient.query(
         `INSERT INTO phieutinhtien (maphieu, madonhang, manhanvien, ngaytao) VALUES (?, ?, ?, ?)`, [code, madonhang, manv, date]
     );
-    console.log(record)
-        // return record;
+        return record.affectedRows;
 };
 async function foodList() {
     const record = await dbClient.query(

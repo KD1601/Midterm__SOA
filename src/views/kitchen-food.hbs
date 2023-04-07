@@ -22,22 +22,22 @@
         float: right;
         margin-right: 24%;
     }
+
     .login {
         display: none;
     }
 
-    #back{
+    #back {
         text-decoration: none;
         margin-bottom: 4px;
     }
 
-    .footer{
+    .footer {
         display: none;
     }
 </style>
 
 <body>
-
     <div class="table__handleFood">
         <table class="table">
             <thead>
@@ -49,18 +49,19 @@
                 </tr>
             </thead>
             <tbody>
-                {{#each data}}   
-                    <tr>
-                        <td class="w-25">{{mamonan}}</td>
-                        <td class="w-25">{{tenmonan}}</td>
-                        <td class="w-25">{{trangthai}}</td>
-                        <td class="w-25 ">
-                            <div class="form-check form-switch">
-                                <label class="form-check-label" for="flexSwitchCheckChecked">Bật/Tắt món ăn</label>
-                                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked{{mamonan}}" {{isEmpty trangthai}}>
-                            </div>
-                        </td>
-                    </tr>
+                {{#each data}}
+                <tr>
+                    <td class="w-25">{{mamonan}}</td>
+                    <td class="w-25">{{tenmonan}}</td>
+                    <td class="w-25">{{trangthai}}</td>
+                    <td class="w-25 ">
+                        <div class="form-check form-switch">
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Bật/Tắt món ăn</label>
+                            <input class="form-check-input" type="checkbox" role="switch"
+                                id="flexSwitchCheckChecked{{mamonan}}" {{isEmpty trangthai}}>
+                        </div>
+                    </td>
+                </tr>
                 {{/each}}
 
             </tbody>
@@ -116,6 +117,7 @@
             });
         });
     });
+
 </script>
 
 </html>
