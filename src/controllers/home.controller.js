@@ -48,6 +48,8 @@ async function completeOrder(req, res, next) {
         const moment = require('moment-timezone');
         const currentTime = moment().tz('Asia/Ho_Chi_Minh');
         const formattedTimeDay = currentTime.format('YYYY-MM-DD');
+        console.log(req.session.maban)
+        console.log(req.session.manv)
         const donhang = {
             madonhang: generateRandomCode(),
             maban: req.session.maban,
@@ -303,7 +305,10 @@ async function handleOpenTableAPI(req, res, next) {
         const result = await homeServices.getOpenTable(maban)
         const check = result.results
 
-        res.json({ result: check })
+        res.status(200).json({
+            message: `Open table ${maban} successfully`,
+            result: check 
+        })
 
     } catch (err) {
         console.error('Error', err.message);
