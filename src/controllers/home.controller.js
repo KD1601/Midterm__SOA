@@ -45,11 +45,9 @@ async function home(req, res, next) {
 
 async function completeOrder(req, res, next) {
     try {
-        console.log(req.body)
         const moment = require('moment-timezone');
         const currentTime = moment().tz('Asia/Ho_Chi_Minh');
         const formattedTimeDay = currentTime.format('YYYY-MM-DD');
-
         const donhang = {
             madonhang: generateRandomCode(),
             maban: req.session.maban,
@@ -64,7 +62,6 @@ async function completeOrder(req, res, next) {
 
         const details = req.body.orderItems
         for (detail in details) {
-            console.log(details[detail])
             const mamonan = await homeServices.getMaMonAn(details[detail].name);
             madon = donhang.madonhang;
             soluong = details[detail].quantity;
@@ -240,7 +237,7 @@ async function handleCloseTableEnd(req, res, next) {
         var response = {}
         response = await fetch('http://localhost:3000/api/close-tableEnd', options);
         const result = await response.json();
-        if(result.billStatus == 1) {
+        if (result.billStatus == 1) {
             req.session.flash = {
                 message: `Phiếu tính tiền ${result.billCode} đã được tạo thành công vào lúc ${result.timeCreated}`,
             }
