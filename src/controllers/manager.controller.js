@@ -167,6 +167,7 @@ async function toHandleDetailOfBillPage(req, res, next) {
 async function toHandleDetailOfBillPageAPI(req, res, next) {
     try {
         if (req.params.id) {
+            console.log(req.params.id)
             const detail = await homeServices.getBillDetail(req.params.id)
             const cacMaMonAn = detail.map(item => item.mamonan);
             async function getFoods(callback) {

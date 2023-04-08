@@ -14,6 +14,8 @@ router.post('/api/handle-order', kitchenController.completeOrderAPI);
 
 
 router.get('/handle-order/:id', kitchenController.toHandleDetailOrderPage);
+router.get('/api/handle-order/:id', kitchenController.toHandleDetailOrderPageAPI);
+
 router.get('/handle-food', kitchenController.toHandleFoodPage);
 router.get('/api/handle-food', kitchenController.toHandleFoodPageAPI);
 

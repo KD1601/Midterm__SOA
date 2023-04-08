@@ -74,7 +74,7 @@ async function completeOrder(req, res, next) {
         req.session.flash = {
             message: `Đơn hàng đã được chuyển đến nhân viên bếp. Cảm ơn quý khách đã gọi món`,
         }
-        res.end('create order complete');
+        res.status(200).json({message:"create order complete"});
     } catch (err) {
         console.error('Error', err.message);
         next(err);

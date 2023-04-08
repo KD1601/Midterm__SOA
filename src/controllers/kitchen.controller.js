@@ -32,7 +32,7 @@ async function toHandleOrderPageApi(req, res, next) {
     }
 }
 
-async function toHandleDetailOrderPage(req, res, next) {
+async function toHandleDetailOrderPageAPI(req, res, next) {
     try {
         const order = await kitchenServices.getOrder(req.params.id)
         const data = []
@@ -44,7 +44,19 @@ async function toHandleDetailOrderPage(req, res, next) {
                 ghichu: order[x].ghichu
             })
         }
-        res.render('kitchen-detail-order', { data: data, id: req.params.id })
+        res.status(200).json({ data: data, id: req.params.id }) 
+    } catch (err) {
+        console.error('An error when direct to kitchen-order page', err.message);
+        next(err);
+    }
+}
+
+async function toHandleDetailOrderPage(req, res, next) {
+    try {
+        var response = {}
+        response = await fetch(`http://localhost:3000/kitchen/api/handle-order/${req.params.id}`);
+        const orders = await response.json();
+        res.render('kitchen-detail-order', { data: orders.data, id: orders.id })
     } catch (err) {
         console.error('An error when direct to kitchen-order page', err.message);
         next(err);
@@ -160,4 +172,5 @@ module.exports = {
     completeOrderAPI,
     toHandleFoodPageAPI,
     changeFoodStatusAPI,
+    toHandleDetailOrderPageAPI,
 };
