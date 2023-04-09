@@ -13,7 +13,6 @@ async function toHandleSumBillPage(req, res, next) {
     try {
         const response = await fetch(`http://localhost:3000/manager/api/sum-bill`);
         const data = await response.json();
-        console.log(data)
         res.render('manager-sum-bill', { bills: data })
     } catch (err) {
         console.error('An error when direct to manager-sum-bill page', err.message);
@@ -46,6 +45,16 @@ async function toHandleSumBillPageAPI(req, res, next) {
                 const total = arrPrice[i];
                 bill.tongtien = total;
             }
+
+            for (let i = 0; i < listDay.length; i++) {
+                const ngayTao = new Date(listDay[i].ngaytao);
+                const ngayThangNam = ngayTao.toLocaleDateString('vi-VN');
+                const gioPhutGiay = ngayTao.toLocaleTimeString('vi-VN');
+                const ngayGioPhutGiay = `${ngayThangNam}, ${gioPhutGiay}`;
+
+                listDay[i].ngaytao = ngayGioPhutGiay;
+            }
+
             return res.json(listDay)
         }
     } catch (err) {
@@ -58,6 +67,15 @@ async function toHandleBillHistoryPage(req, res, next) {
     try {
         const response = await fetch(`http://localhost:3000/manager/api/bill-history`)
         const data = await response.json();
+        for (let i = 0; i < data.length; i++) {
+            const ngayTao = new Date(data[i].ngaytao);
+            const ngayThangNam = ngayTao.toLocaleDateString('vi-VN');
+            const gioPhutGiay = ngayTao.toLocaleTimeString('vi-VN');
+            const ngayGioPhutGiay = `${ngayThangNam}, ${gioPhutGiay}`;
+
+            data[i].ngaytao = ngayGioPhutGiay;
+        }
+
         res.render('manager-bill-history', {
             bills: data
         })
@@ -92,7 +110,6 @@ async function toHandleBillHistoryPageAPI(req, res, next) {
 
 async function toSelectYear(req, res, next) {
     try {
-        // console.log(req.body)
         const response = await fetch(`http://localhost:3000/manager/api/bill-history`, {
             method: 'POST',
             headers: {
@@ -101,7 +118,11 @@ async function toSelectYear(req, res, next) {
             body: JSON.stringify(req.body)
         });
         const data = await response.json();
-        res.render('manager-bill-history', { bills: data })
+        if(data.length > 0) {
+            res.render('manager-bill-history', { bills: data })
+        } else {
+            res.render('manager-bill-history')
+        }
     } catch (err) {
         console.error('An error when direct to manager-main page', err.message);
         next(err);
@@ -132,7 +153,7 @@ async function toSelectYearAPI(req, res, next) {
             listYear = await managerServices.getBillsSelected(time)
         }
         var arrPrice = [];
-        if (listYear[0].madonhang) {
+        if (listYear.length > 0) {
             for (let i = 0; i < listYear.length; i++) {
                 const billdetails = await homeServices.getBillM(listYear[i].madonhang)
                 arrPrice.push(billdetails[0].tongtien)
@@ -143,9 +164,12 @@ async function toSelectYearAPI(req, res, next) {
                 const total = arrPrice[i];
                 bill.tongtien = total;
             }
-            // console.log(listYear)
+            return res.json(listYear);
+
+        } else {
+            return res.json({message : "can not find bill"})
         }
-        return res.json(listYear);
+
     } catch (err) {
         console.error('An error when direct to manager-main page', err.message);
         next(err);
@@ -167,11 +191,10 @@ async function toHandleDetailOfBillPage(req, res, next) {
 async function toHandleDetailOfBillPageAPI(req, res, next) {
     try {
         if (req.params.id) {
-            console.log(req.params.id)
             const detail = await homeServices.getBillDetail(req.params.id)
             const cacMaMonAn = detail.map(item => item.mamonan);
             async function getFoods(callback) {
-                const promises = cacMaMonAn.map(async(element) => {
+                const promises = cacMaMonAn.map(async (element) => {
                     let food = await homeServices.getFood(element);
                     return food;
                 });
@@ -188,7 +211,6 @@ async function toHandleDetailOfBillPageAPI(req, res, next) {
                     }
                 });
                 const arr = arrFood.flat()
-                    // console.log(arr)
                 return res.json(arr);
             });
         }
@@ -209,3 +231,4 @@ module.exports = {
     toSelectYearAPI,
     toHandleDetailOfBillPageAPI
 };
+

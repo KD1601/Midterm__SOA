@@ -241,14 +241,14 @@ async function handleCloseTableEnd(req, res, next) {
         const result = await response.json();
         if (result.billStatus == 1) {
             req.session.flash = {
-                message: `Phiếu tính tiền ${result.billCode} đã được tạo thành công vào lúc ${result.timeCreated}`,
+                message: `Phiếu tính tiền ${result.billCode} đã được tạo thành công vào lúc ${result.timeCreated} bởi nhân viên ${manv}`,
             }
         } else {
             req.session.flash = {
                 message: `Tạo phiếu tính tiền ${result.billCode} thất bại`,
             }
         }
-        res.redirect('/close-table')
+        res.redirect(`/manager/${manv}`)
     } catch (err) {
         console.error('Error', err.message);
         next(err);

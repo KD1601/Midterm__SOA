@@ -17,18 +17,23 @@
 </head>
 
 <style>
-
+    #flash-alert{
+        position: absolute;
+        z-index: 9;
+    }
 </style>
 
 <body>
+
+    {{> header}}
+
     <!-- Flash message -->
     {{#if flash}}
-    <div id="flash-alert" class="alert alert-success text-center w-100 mx-auto my-3">
+    <div id="flash-alert" class="alert alert-success text-center w-100 mx-auto ">
         <span> <strong> {{{flash.message}}}</strong></span>
     </div>
     {{/if}}
     <!-- End Flash message -->
-    {{> header}}
     
     {{{body}}}
     {{> footer}}
@@ -45,7 +50,7 @@
         // Sau 1 giây, ẩn flash message
         const timeoutId = setTimeout(() => {
             flashMessage.style.display = 'none';
-        }, 2000);
+        }, 3000);
 
     }
 </script>
