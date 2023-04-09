@@ -30,6 +30,7 @@
                     <select name="year" id="years" class="form-select" onchange="showMonths()"
                         aria-label="Default select example">
                         <option disabled selected>Chọn năm</option>
+                        <option value="2020">2019</option>
                         <option value="2020">2020</option>
                         <option value="2021">2021</option>
                         <option value="2022">2022</option>
@@ -102,9 +103,6 @@
     const form__selected = document.getElementById("form__selected")
     function showMonths() {
         document.getElementById("months").removeAttribute('disabled');
-        // {{!-- var selectedYear = event.target.value;
-        //yearSelected.value = selectedYear
-        //formYear.submit() --}}
     }
     function showDays() {
         var month = document.getElementById("months").value;
