@@ -1,5 +1,11 @@
 const dbClient = require('./db_client');
 
+async function getEmployee(manv) {
+    const record = await dbClient.query(
+        `SELECT * FROM nhanvien where manhanvien = ?`, [manv]
+    );
+    return record;
+};
 
 async function getTables() {
     const record = await dbClient.query(
@@ -114,5 +120,6 @@ module.exports = {
     getBillM,
     foodId,
     createO,
-    createDetailO
+    createDetailO,
+    getEmployee
 }

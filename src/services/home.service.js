@@ -1,6 +1,15 @@
 // Define your services here
 const repo = require('../repositories/home.repository')
 
+async function getEmployee(manv) {
+    try {
+        var result = await repo.getEmployee(manv)
+        return result
+    } catch (err) {
+        console.log(err);
+        throw new Error('Service: Something wrong');
+    }
+}
 
 async function getTables() {
     try {
@@ -43,12 +52,16 @@ async function getCloseTable(maban) {
 async function getOpenTable(maban) {
     try {
         var result = await repo.getOpenTable(maban)
-        if(result == 1) {
-            return {message: "Open table successfully",
-        results: result}
-        }  else {
-            return {message: "Open table failed",
-            results: result}
+        if (result == 1) {
+            return {
+                message: "Open table successfully",
+                results: result
+            }
+        } else {
+            return {
+                message: "Open table failed",
+                results: result
+            }
         }
     } catch (err) {
         console.log(err);
@@ -180,5 +193,6 @@ module.exports = {
     getBillM,
     getMaMonAn,
     createOrder,
-    createDetailOrder
+    createDetailOrder,
+    getEmployee
 }

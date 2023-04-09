@@ -9,6 +9,8 @@ router.get('/api/home/:filter?', homeController.homeAPI);
 // router.get('/home/:filter', homeController.home);
 router.post('/home', homeController.completeOrder);
 
+router.post('/api/check-employee/:id', homeController.checkEmployeeAPI);
+
 router.get('/open-table/:id', homeController.getListTable);
 router.get('/api/open-table/:id?', homeController.getListTableApi);
 

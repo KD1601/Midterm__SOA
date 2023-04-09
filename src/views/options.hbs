@@ -140,33 +140,46 @@
 </body>
 <script>
     const btnOpenTable = document.querySelector('#btn__openTable');
-    
+
     const form__checkRole = document.getElementById('form__checkRole')
     form__checkRole.addEventListener('submit', (event) => {
         event.preventDefault();
     });
-    function checkEmployeeType() {
-        const employeeCode = document.getElementById('employee-code').value;
+    async function checkEmployeeType() {
+        const employeeInput =  document.getElementById('employee-code')
+        const employeeCode = employeeInput.value;
         if (employeeCode.length < 5 || employeeCode.length > 5) {
             alert('Mã nhân viên phải có 5 kí tự! Vui lòng nhập lại.');
             return; // Dừng chương trình để người dùng nhập lại
         } else {
-            const lastCharacter = employeeCode.slice(-1);
-            // Kiểm tra ký tự cuối cùng có phải là "B" hay không
-            if (lastCharacter === 'P') {
-                // Hiển thị giao diện tương ứng cho nhân viên bếp
-                btnOpenTable.href = `/open-table/${employeeCode}`;
-                document.querySelector('.center').style.display = 'none';
-                document.getElementById('kitchen-interface').style.display = 'block';
-                document.getElementById('default-interface').style.display = 'none';
-            } else if (lastCharacter === 'Q') {
-                window.location.href = `/manager/${employeeCode}`
+
+            let response = await fetch(`http://localhost:3000/api/check-employee/${employeeCode}`, {
+                method: 'POST',
+            });
+            let data = await response.json();
+            if (data.status == "exist") {
+                const lastCharacter = employeeCode.slice(-1);
+                // Kiểm tra ký tự cuối cùng có phải là "B" hay không
+                if (lastCharacter === 'P') {
+                    // Hiển thị giao diện tương ứng cho nhân viên bếp
+                    btnOpenTable.href = `/open-table/${employeeCode}`;
+                    document.querySelector('.center').style.display = 'none';
+                    document.getElementById('kitchen-interface').style.display = 'block';
+                    document.getElementById('default-interface').style.display = 'none';
+                } else if (lastCharacter === 'Q') {
+                    window.location.href = `/manager/${employeeCode}`
+                }
+                else if (lastCharacter === 'B') {
+                    window.location.href = "/kitchen"
+                } else {
+                    alert("Vui lòng nhập đúng mã nhân viên của bạn!")
+                    window.location.href = "/"
+                }
             }
-            else if (lastCharacter === 'B') {
-                window.location.href = "/kitchen"
-            } else {
-                alert("Vui lòng nhập đúng mã nhân viên của bạn!")
-                window.location.href = "/"
+            else{
+                alert('Mã nhân viên không đúng.');
+                employeeInput.focus();
+                return;
             }
         }
 

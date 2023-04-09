@@ -88,7 +88,6 @@
     #btn__closeTable:hover {
         opacity: 0.8;
     }
-
 </style>
 
 <body>
@@ -211,14 +210,25 @@
     btn__exit.addEventListener('click', () => {
         window.location.href = "/close-table"
     })
-
-    btn__closeTable.addEventListener('click', (e) => {
+    
+    btn__closeTable.addEventListener('click', async(e) => {
         if (employee_code.value == null || employee_code.value.length != 5) {
             alert("Vui lòng nhập đúng mã nhân viên")
         } else {
-            idTable.value = e.target.getAttribute('data-id');
-            employeeId.value = employee_code.value
-            form__trigger.submit()
+            let response = await fetch(`http://localhost:3000/api/check-employee/${employee_code.value}`, {
+                method: 'POST',
+            });
+            let data = await response.json();
+            if (data.status == "exist") {
+                idTable.value = e.target.getAttribute('data-id');
+                employeeId.value = employee_code.value
+                form__trigger.submit()
+            }
+            else {
+                alert('Mã nhân viên không đúng.');
+                employee_code.focus();
+                return;
+            }
         }
     })
 

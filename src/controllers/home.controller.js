@@ -11,6 +11,19 @@ async function index(req, res, next) {
     }
 }
 
+async function checkEmployeeAPI(req, res, next) {
+    try {
+        const employee = await homeServices.getEmployee(req.params.id)
+        if (employee.length > 0) {
+            return res.json({ status: 'exist' })
+        }
+        return res.json({ status: 'not exist' })
+    } catch (err) {
+        console.error('Error', err.message);
+        next(err);
+    }
+}
+
 async function homeAPI(req, res, next) {
     try {
         var foods = {}
@@ -74,7 +87,7 @@ async function completeOrder(req, res, next) {
         req.session.flash = {
             message: `Đơn hàng đã được chuyển đến nhân viên bếp. Cảm ơn quý khách đã gọi món`,
         }
-        res.status(200).json({message:"create order complete"});
+        res.status(200).json({ message: "create order complete" });
     } catch (err) {
         console.error('Error', err.message);
         next(err);
@@ -307,7 +320,7 @@ async function handleOpenTableAPI(req, res, next) {
 
         res.status(200).json({
             message: `Open table ${maban} successfully`,
-            result: check 
+            result: check
         })
 
     } catch (err) {
@@ -331,4 +344,5 @@ module.exports = {
     handleOpenTableAPI,
     handleCloseTableAPI,
     handleCloseTableEndAPI,
+    checkEmployeeAPI
 };
