@@ -82,8 +82,8 @@
                     <th scope="row">{{this.maphieu}}</th>
                     <td><a href="/manager/detail-order/{{this.madonhang}}">{{this.madonhang}}</a></td>
                     <td>{{this.manhanvien}}</td>
-                    <td>{{this.ngaytao}}</td>
-                    <td>{{this.tongtien}}</td>
+                    <td>{{formatDateTime this.ngaytao}}</td>
+                    <td>{{formatMoney this.tongtien}}</td>
                 </tr>
                 {{/each}}
                 {{#unless bills }}
