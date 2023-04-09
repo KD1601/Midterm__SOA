@@ -73,6 +73,10 @@ app.engine(
             isEmpty: function(trangthai) {
                 if (trangthai == "Đã bán hết") return "";
                 else return "checked"
+            },
+            isNotHave: function(trangthai) {
+                if (trangthai == "Sẵn có") return false;
+                else return true;
             }
         }
     }),

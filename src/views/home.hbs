@@ -98,7 +98,7 @@
             <div class="col py-3 bg-dark">
                 <div id="food__list" class="product-row row">
                     {{#each data}}
-                    <div class="product-card col-md-5">
+                    <div class="product-card col-md-5" {{#if (isNotHave trangthai)}}style="background-color: gray"{{/if}}>
                         <img class="product-image" src="{{hinhanh}}" alt="Product 1">
                         <div class="product-info">
                             <h3 class="product-name" value="{{tenmonan}}">{{tenmonan}}</h3>
@@ -106,7 +106,12 @@
                             <div class="quantity-control justify-content-around counter">
                                 <button class="quantity-btn decrement">-</button>
                                 <span class="quantity-value count">0</span>
-                                <button class="quantity-btn increment">+</button>
+                                {{#if (isNotHave trangthai)}}
+                                    <button class="quantity-btn increment" hidden>+</button>
+                                    <span class="quantity-value count" style="color: red;">Đã bán hết</span>
+                                {{else}}
+                                    <button class="quantity-btn increment">+</button>
+                                {{/if}}
                             </div>
                         </div>
                     </div>

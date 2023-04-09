@@ -62,18 +62,18 @@ async function createBill(code, madonhang, manv, date) {
     const record = await dbClient.query(
         `INSERT INTO phieutinhtien (maphieu, madonhang, manhanvien, ngaytao) VALUES (?, ?, ?, ?)`, [code, madonhang, manv, date]
     );
-        return record.affectedRows;
+    return record.affectedRows;
 };
 async function foodList() {
     const record = await dbClient.query(
-        `SELECT * FROM monan WHERE trangthai = 'Sẵn có'`
+        `SELECT * FROM monan`
     );
     return record;
 }
 
 async function foodListFilter(filter) {
     const record = await dbClient.query(
-        `SELECT * FROM monan WHERE mamonan LIKE '%${filter}%' AND trangthai = 'Sẵn có'`
+        `SELECT * FROM monan WHERE mamonan LIKE '%${filter}%'`
     );
     return record;
 }
