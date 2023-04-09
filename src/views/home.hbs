@@ -45,7 +45,7 @@
             margin-left: 55%;
         }
 
-        ul li a{
+        ul li a {
             font-weight: 750 !important;
             color: rgb(196, 207, 124) !important;
         }
@@ -62,35 +62,34 @@
         <div class="row flex-nowrap">
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <a 
-                        class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <a class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                         <span class="fs-5 d-none d-sm-inline fw-bold menu">MENU</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                         id="menu">
                         <li class="nav-item">
-                            <a href="/home" class="nav-link align-middle px-0">Tất cả</a>
+                            <a onclick="filter('all')" href="#" class="nav-link align-middle px-0">Tất cả</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/home/dv" class="nav-link align-middle px-0">Đồ viên</a>
+                            <a onclick="filter('dv')" href="#" class="nav-link align-middle px-0">Đồ viên</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/home/hs" class="nav-link align-middle px-0">Hải sản</a>
+                            <a onclick="filter('hs')" href="#" class="nav-link align-middle px-0">Hải sản</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/home/nam" class="nav-link align-middle px-0">Nấm</a>
+                            <a onclick="filter('nam')" href="#" class="nav-link align-middle px-0">Nấm</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/home/rau" class="nav-link align-middle px-0">Rau</a>
+                            <a onclick="filter('rau')" href="#" class="nav-link align-middle px-0">Rau</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/home/tb" class="nav-link align-middle px-0">Thịt bò</a>
+                            <a onclick="filter('tb')" href="#" class="nav-link align-middle px-0">Thịt bò</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/home/tg" class="nav-link align-middle px-0">Thị gà</a>
+                            <a onclick="filter('tg')" href="#" class="nav-link align-middle px-0">Thị gà</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/home/th" class="nav-link align-middle px-0">Thị heo</a>
+                            <a onclick="filter('th')" href="#" class="nav-link align-middle px-0">Thị heo</a>
                         </li>
                     </ul>
                     <hr>
@@ -112,11 +111,9 @@
                         </div>
                     </div>
                     {{/each}}
-
                 </div>
-
-
             </div>
+
         </div>
 
         <div>
@@ -155,6 +152,24 @@
         } else {
             log.style.display = "none";
         }
+    }
+    const productCards = document.querySelectorAll('.product-card');
+    async function filter(type) {
+        let response = await fetch(`http://localhost:3000/api/home/${type}`);
+        if(type == "all")
+        {
+            response = await fetch(`http://localhost:3000/api/home/`);
+        }
+        let data = await response.json();
+        productCards.forEach((card, index) => {
+            const productName = card.querySelector('.product-name').getAttribute('value');
+            card.style.display = "none";
+            data.foods.forEach((food, foodIndex) => {
+                if(productName == food.tenmonan){
+                    card.style.display = "block";
+                }
+            })
+        });
     }
     // Lấy tất cả các phần tử có class là "product-price"
     const productPrices = document.querySelectorAll('.product-price');
@@ -231,7 +246,7 @@
             });
 
             // Đặt giá trị của tổng vào thẻ td cuối cùng của tfoot
-            $('#menu-order-table tfoot td:last-child').text(totalPrice);
+            $('#menu-order-table tfoot td:last-child').text(totalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
         });
     }
 
@@ -318,16 +333,15 @@
                 orderItem.note = $(this).find('td:eq(3) input[name="ghichu"]').val();
                 orderItems.push(orderItem);
             });
-
             // Lấy giá trị tổng tiền
-            var total = parseInt($('#menu-order-table tfoot td:eq(1)').text());
+            var total = parseInt(Number.parseInt($('#menu-order-table tfoot td:eq(1)').text().replace(/\D/g, '')));
 
             // Gửi các giá trị đến đường dẫn /home bằng phương thức POST
             $.ajax({
                 type: 'POST',
                 url: '/home',
                 data: { orderItems: orderItems, total: total },
-                success: function (response) { 
+                success: function (response) {
                     window.location.href = '/home'
                 },
                 error: function (xhr, status, error) {
