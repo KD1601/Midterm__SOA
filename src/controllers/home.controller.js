@@ -261,7 +261,14 @@ async function handleCloseTableEnd(req, res, next) {
                 message: `Tạo phiếu tính tiền ${result.billCode} thất bại`,
             }
         }
-        res.redirect(`/manager/${manv}`)
+        let url = ''
+        if (manv.charAt(manv.length - 1) == 'Q') {
+            url = `/manager/${manv}`
+        } else {
+            url = '/'
+        }
+
+        res.redirect(url)
     } catch (err) {
         console.error('Error', err.message);
         next(err);
